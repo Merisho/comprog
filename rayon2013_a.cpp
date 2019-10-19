@@ -2,8 +2,8 @@
 #include <math.h>
 using namespace std;
 
-string interestingCorrespondence(int, string[10]);
-string diagonalStr(int, int, int, string[10]);
+string interestingCorrespondence(int, string);
+string diagonalStr(int, int, int, string);
 
 int main()
 {
@@ -12,42 +12,33 @@ int main()
 	cin >> n;
 	cin >> msg;
 	
-	string s[10];
 	int k = sqrt(n);
-	string buff;
-	for (int i = 0; i < n; i++) {
-		buff += msg[i];
-		if (i % k == (k - 1)) {
-			s[i / k] = buff;
-			buff = "";
-		}
-	}
 
-	cout << interestingCorrespondence(k, s);
+	cout << interestingCorrespondence(k, msg);
 
 	return 0;
 }
 
-string interestingCorrespondence(int k, string s[10])
+string interestingCorrespondence(int k, string msg)
 {
 	string res = "";
 	
 	for (int x = 0; x < k; x++) {
-		res += diagonalStr(x, 0, k, s);
+		res += diagonalStr(x, 0, k, msg);
 	}
 
 	for (int y = 1; y < k; y++) {
-		res += diagonalStr(k - 1, y, k, s);
+		res += diagonalStr(k - 1, y, k, msg);
 	}
 
 	return res;
 }
 
-string diagonalStr(int x, int y, int k, string s[10])
+string diagonalStr(int x, int y, int k, string msg)
 {
 	if (x - 1 < 0 || y + 1 >= k) {
-		return string(1, s[y][x]);
+		return string(1, msg[y * k + x]);
 	}
 
-	return string(1, s[y][x]) + diagonalStr(x - 1, y + 1, k, s);
+	return string(1, msg[y * k + x]) + diagonalStr(x - 1, y + 1, k, msg);
 }
