@@ -1,8 +1,8 @@
-#include <iostream>
+﻿#include <iostream>
 #include <vector>
 using namespace std;
 
-int integerPoints();
+long long integerPoints();
 
 int main()
 {
@@ -16,20 +16,16 @@ int main()
 	return 0;
 }
 
-int integerPoints() {
+long long integerPoints() {
 	int n;
 	cin >> n;
 
-	int pe = 0;
-	int po = 0;
-	int pz = 0;
+	long long pe = 0;
+	long long po = 0;
 	for (int i = 0; i < n; i++) {
-		int pi;
+		long pi;
 		cin >> pi;
-		if (pi == 0) {
-			pz++;
-		}
-		else if (pi % 2 == 0) {
+		if (pi % 2 == 0) {
 			pe++;
 		}
 		else {
@@ -40,16 +36,12 @@ int integerPoints() {
 	int m;
 	cin >> m;
 
-	int qe = 0;
-	int qo = 0;
-	int qz = 0;
+	long long qe = 0;
+	long long qo = 0;
 	for (int i = 0; i < m; i++) {
-		int qi;
+		long qi;
 		cin >> qi;
-		if (qi == 0) {
-			qz++;
-		}
-		else if (qi % 2 == 0) {
+		if (qi % 2 == 0) {
 			qe++;
 		}
 		else {
@@ -57,5 +49,5 @@ int integerPoints() {
 		}
 	}
 
-	return pe * qe + po * qo + pz * qe + qz * pe;
+	return pe * qe + po * qo;
 }
