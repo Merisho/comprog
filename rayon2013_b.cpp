@@ -27,9 +27,9 @@ int main()
 int talentsCompetition(int n, int k, int f[10][10])
 {
 	int max1 = findMax(n, k, f, 0, 0, 1, 1);
-	int max2 = findMax(n, k, f, 3, 0, -1, 1);
-	int max3 = findMax(n, k, f, 0, 3, 1, -1);
-	int max4 = findMax(n, k, f, 3, 3, -1, -1);
+	int max2 = findMax(n, k, f, n - 1, 0, -1, 1);
+	int max3 = findMax(n, k, f, 0, n - 1, 1, -1);
+	int max4 = findMax(n, k, f, n - 1, n - 1, -1, -1);
 
 	int m1 = max1 > max2 ? max1 : max2;
 	int m2 = max3 > max4 ? max3 : max4;
