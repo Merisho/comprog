@@ -46,9 +46,17 @@ int main() {
 
 int sum(vector<int> groups, int size) {
 	int s = 0;
-	for (int i = 0; i < groups.size(); i++) {
-		s += min(groups[i], size);
+	int i = 0;
+	for (auto const& v : groups) {
+		if (v >= size) {
+			break;
+		}
+
+		s += v;
+		i++;
 	}
+
+	s += (groups.size() - i) * size;
 
 	return s;
 }
