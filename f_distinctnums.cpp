@@ -4,7 +4,8 @@
 #include <algorithm>
 using namespace std;
 
-int sum(vector<int>, int);
+int sum(vector<int>, vector<int>, int);
+int findGreater(vector<int>, int);
 
 int main() {
 	int n;
@@ -19,18 +20,24 @@ int main() {
 
 	vector<int> groups;
 	map<int, int>::iterator it;
-	for (it = m.begin(); it != m.end(); it++) {
+	for (it = m.begin(); it != m.end(); ++it) {
 		groups.push_back(it->second);
 	}
 
 	sort(groups.begin(), groups.end());
 
+	vector<int> sums;
+	sums.push_back(groups[0]);
+	for (int i = 1; i < groups.size(); i++) {
+		sums.push_back(groups[i - 1] + groups[i]);
+	}
+
 	cout << n << endl;
 	int prevSize = n;
-	for (int k = 2; k <= n; k++) {
+	for (int k = 2; k <= n; ++k) {
 		int size = prevSize;
 		while (size > 0) {
-			if (sum(groups, size) >= k * size) {
+			if (sum(groups, sums, size) >= k * size) {
 				break;
 			}
 
@@ -44,19 +51,31 @@ int main() {
 	return 0;
 }
 
-int sum(vector<int> groups, int size) {
+int sum(vector<int> groups, vector<int> sums, int size) {
 	int s = 0;
-	int i = 0;
-	for (auto const& v : groups) {
-		if (v >= size) {
-			break;
-		}
-
-		s += v;
-		i++;
-	}
-
-	s += (groups.size() - i) * size;
+	int i = findGreater(groups, size);
+	
+	s += (groups.size() - i - 1) * size + sums[i];
 
 	return s;
+}
+
+int findGreater(vector<int> v, int size) {
+	int i = v.size() / 2;
+	while (i > 0 && i < v.size() - 1) {
+		int j = i + 1;
+		if (v[i] < size && v[j] >= size) {
+			return i + 1;
+		}
+
+		if (v[i] <= size && v[j] <= size) {
+			i += i / 2;
+		}
+		else if (v[i] >= size && v[j] >= size) {
+			i -= i / 2;
+		}
+
+	}
+
+	return i;
 }
