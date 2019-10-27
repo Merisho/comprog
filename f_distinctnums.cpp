@@ -55,27 +55,32 @@ int sum(vector<int> groups, vector<int> sums, int size) {
 	int s = 0;
 	int i = findGreater(groups, size);
 	
-	s += (groups.size() - i - 1) * size + sums[i];
+	if (i == -1) {
+		
+	}
+
+	s += (groups.size() - i - 1) * size + sums[i - 1];
 
 	return s;
 }
 
 int findGreater(vector<int> v, int size) {
-	int i = v.size() / 2;
-	while (i > 0 && i < v.size() - 1) {
+	int vsize = v.size();
+	int i = vsize / 2;
+	while (i > 0 && i < vsize - 1) {
 		int j = i + 1;
 		if (v[i] < size && v[j] >= size) {
-			return i + 1;
+			return j;
 		}
 
 		if (v[i] <= size && v[j] <= size) {
 			i += i / 2;
 		}
 		else if (v[i] >= size && v[j] >= size) {
-			i -= i / 2;
+			i += i / 2;
 		}
 
 	}
 
-	return i;
+	return v[i] >= size ? i : -1;
 }
