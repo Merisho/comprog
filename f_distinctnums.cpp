@@ -7,11 +7,12 @@ using namespace std;
 int sum(vector<int>, vector<int>, int);
 int findGreater(vector<int>, int);
 
+int m[300000];
+
 int main() {
 	int n;
 	cin >> n;
 
-	map<int, int> m;
 	for (int i = 0; i < n; i++) {
 		int t;
 		cin >> t;
@@ -19,9 +20,10 @@ int main() {
 	}
 
 	vector<int> groups;
-	map<int, int>::iterator it;
-	for (it = m.begin(); it != m.end(); ++it) {
-		groups.push_back(it->second);
+	for (int i = 0; i < 300000; ++i) {
+		if (m[i] > 0) {
+			groups.push_back(m[i]);
+		}
 	}
 
 	sort(groups.begin(), groups.end());
