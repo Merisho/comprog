@@ -35,44 +35,49 @@ int main() {
 	}
 
 	cout << n << endl;
-	int prevSize = n;
+	int prevTimes = n;
 	for (int k = 2; k <= n; ++k) {
-		int size = prevSize;
-		while (size > 0) {
-			if (sum(groups, sums, size) >= k * size) {
+		int times = prevTimes;
+		while (times > 0) {
+			if (sum(groups, sums, times) >= k * times) {
 				break;
 			}
 
-			size--;
+			times--;
 		}
 
-		cout << size << endl;
-		prevSize = size;
+		cout << times << endl;
+		prevTimes = times;
 	}
 
 	return 0;
 }
 
-int sum(vector<int> groups, vector<int> sums, int size) {
-	int i = findGreater(groups, size);
-
-	if (i == -1) {
-		return groups.size() * size;
+int sum(vector<int> groups, vector<int> sums, int times) {
+	int last = sums.size() - 1;
+	if (times >= sums[last]) {
+		return sums[last];
 	}
 
-	return (groups.size() - i - 1) * size + sums[i];
+	int i = findGreater(groups, times);
+
+	if (i == -1) {
+		return groups.size() * times;
+	}
+
+	return (groups.size() - i - 1) * times + sums[i];
 }
 
-int findGreater(vector<int> v, int size) {
+int findGreater(vector<int> v, int times) {
 	int len = v.size();
 	int start = 0;
 	int end = len - 1;
 	while (start < end) {
 		int m = start + (end - start) / 2;
-		if (v[m] < size && v[m + 1] < size) {
+		if (v[m] < times && v[m + 1] < times) {
 			start = m + 1;
 		}
-		else if (v[m] >= size && v[m + 1] >= size) {
+		else if (v[m] >= times && v[m + 1] >= times) {
 			end = m;
 		}
 		else {
