@@ -29,7 +29,7 @@ int main() {
 	vector<int> sums;
 	sums.push_back(groups[0]);
 	for (int i = 1; i < groups.size(); i++) {
-		sums.push_back(groups[i - 1] + groups[i]);
+		sums.push_back(sums[i - 1] + groups[i]);
 	}
 
 	cout << n << endl;
@@ -52,35 +52,35 @@ int main() {
 }
 
 int sum(vector<int> groups, vector<int> sums, int size) {
-	int s = 0;
 	int i = findGreater(groups, size);
-	
+
 	if (i == -1) {
-		
+		return groups.size() * size;
 	}
 
-	s += (groups.size() - i - 1) * size + sums[i - 1];
-
-	return s;
+	return (groups.size() - i - 1) * size + sums[i];
 }
 
 int findGreater(vector<int> v, int size) {
-	int vsize = v.size();
-	int i = vsize / 2;
-	while (i > 0 && i < vsize - 1) {
-		int j = i + 1;
-		if (v[i] < size && v[j] >= size) {
-			return j;
+	int len = v.size();
+	int start = 0;
+	int end = len - 1;
+	while (start < end) {
+		int m = start + (end - start) / 2;
+		if (v[m] < size && v[m + 1] < size) {
+			start = m + 1;
 		}
-
-		if (v[i] <= size && v[j] <= size) {
-			i += i / 2;
+		else if (v[m] >= size && v[m + 1] >= size) {
+			end = m;
 		}
-		else if (v[i] >= size && v[j] >= size) {
-			i += i / 2;
+		else {
+			return m;
 		}
-
 	}
 
-	return v[i] >= size ? i : -1;
+	if (end == 0) {
+		return -1;
+	}
+
+	return len - 1;
 }
