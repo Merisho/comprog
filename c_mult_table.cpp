@@ -10,11 +10,16 @@ int main() {
 	cin >> n;
 
 	long long k = sqrt(n);
-	while (k > 0 && n % k != 0) {
+	while (n % k != 0) {
 		k--;
 	}
 
-	cout << d(k, n / k);
+	if (k == 1) {
+		cout << n - 1;
+	}
+	else {
+		cout << d(k, n / k);
+	}
 
 	return 0;
 }
