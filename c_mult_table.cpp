@@ -3,13 +3,17 @@
 #include <algorithm>
 using namespace std;
 
-long long d(long long, long long);
+int d(int, int);
+
+int D[1000000];
 
 int main() {
+	D[1] = 0;
+
 	long long n;
 	cin >> n;
 
-	long long k = sqrt(n);
+	int k = sqrt(n);
 	while (n % k != 0) {
 		k--;
 	}
@@ -24,18 +28,23 @@ int main() {
 	return 0;
 }
 
-long long d(long long x, long long y) {
+int d(int x, int y) {
 	if (x == 1 && y == 1) {
-		return 0;
+		return D[1];
+	}
+
+	int m = max(x, y);
+	if (D[m] != 0) {
+		return D[m];
 	}
 
 	if (x == 1) {
-		return 1 + d(x, y - 1);
+		return D[m] = 1 + d(x, y - 1);
 	}
 
 	if (y == 1) {
-		return 1 + d(x - 1, y);
+		return D[m] = 1 + d(x - 1, y);
 	}
 
-	return 1 + min(d(x - 1, y), d(x, y - 1));
+	return D[m] = 1 + min(d(x - 1, y), d(x, y - 1));
 }
