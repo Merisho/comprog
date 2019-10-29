@@ -1,16 +1,26 @@
 #define _USE_MATH_DEFINES
 #include <iostream>
 #include <cmath>
+#include <iomanip>
 using namespace std;
 
 int main() {
-	float a, b, x;
+	double a, b, x;
 	cin >> a >> b >> x;
 
-	long double hx = x / (a * a);
-	long double d = 2 * (b - hx);
-	long double c = sqrt(a * a + d * d);
-	long double s = a / c;
+	double hx = x / (a * a);
 
-	cout << 90 - asin(s) * (180.0 / M_PI);
+	double t;
+	if (hx >= b / 2) {
+		double d = 2 * (b - hx);
+		t = a / d;
+	}
+	else {
+		double d = a + hx - b / 2;
+		t = b / d;
+	}
+
+	cout << setprecision(10) << 90 - atan(t) * (180.0 / M_PI);
+
+	return 0;
 }
