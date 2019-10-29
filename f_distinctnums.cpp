@@ -54,11 +54,6 @@ int main() {
 }
 
 int sum(vector<int> groups, vector<int> sums, int times) {
-	int last = sums.size() - 1;
-	if (times >= sums[last]) {
-		return sums[last];
-	}
-
 	int i = findGreater(groups, times);
 
 	if (i == -1) {
