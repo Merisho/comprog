@@ -14,13 +14,13 @@ int main() {
 	if (hx >= b / 2) {
 		double d = 2 * (b - hx);
 		t = a / d;
+		cout << setprecision(10) << 90 - atan(t) * (180.0 / M_PI);
 	}
 	else {
-		double d = a + hx - b / 2;
+		double d = a - (b / 2 - hx);
 		t = b / d;
+		cout << setprecision(10) << atan(t) * (180.0 / M_PI);
 	}
-
-	cout << setprecision(10) << 90 - atan(t) * (180.0 / M_PI);
 
 	return 0;
 }
