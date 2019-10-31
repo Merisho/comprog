@@ -4,8 +4,8 @@
 #include <algorithm>
 using namespace std;
 
-int sum(vector<int>, vector<int>, int);
-int findGreater(vector<int>, int);
+int sum(vector<int>&, vector<int>&, int);
+int findGreater(vector<int>&, int);
 
 int m[300000];
 
@@ -53,7 +53,7 @@ int main() {
 	return 0;
 }
 
-int sum(vector<int> groups, vector<int> sums, int times) {
+int sum(vector<int>& groups, vector<int>& sums, int times) {
 	int i = findGreater(groups, times);
 
 	if (i == -1) {
@@ -63,7 +63,7 @@ int sum(vector<int> groups, vector<int> sums, int times) {
 	return (groups.size() - i - 1) * times + sums[i];
 }
 
-int findGreater(vector<int> v, int times) {
+int findGreater(vector<int>& v, int times) {
 	int len = v.size();
 	int start = 0;
 	int end = len - 1;
