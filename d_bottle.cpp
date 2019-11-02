@@ -8,19 +8,41 @@ int main() {
 	double a, b, x;
 	cin >> a >> b >> x;
 
-	double hx = x / (a * a);
+	double v = a * a * b;
 
-	double t;
-	if (hx >= b / 2) {
-		double d = 2 * (b - hx);
-		t = a / d;
-		cout << setprecision(10) << 90 - atan(t) * (180.0 / M_PI);
+	double start = 0;
+	double end = 90;
+	double e = 1e-6;
+	double angl;
+	while (abs(start - end) > e) {
+		angl = (start + end) / 2;
+
+		double vx;
+		if (x <= v / 2) {
+			double r = (angl * M_PI) / 180;
+			double d = b / tan(r);
+			vx = (a * b * d) / 2;
+		}
+		else {
+			double r = ((90 - angl) * M_PI) / 180;
+			double d = a / tan(r);
+			vx = (2 * b - d) / 2 * a * a;
+		}
+
+
+		if (vx == x) {
+			break;
+		}
+
+		if (vx > x) {
+			start = angl;
+		}
+		else {
+			end = angl;
+		}
 	}
-	else {
-		double d = a - (b / 2 - hx);
-		t = b / d;
-		cout << setprecision(10) << atan(t) * (180.0 / M_PI);
-	}
+
+	cout << setprecision(10) << angl;
 
 	return 0;
 }
