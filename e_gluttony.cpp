@@ -72,9 +72,14 @@ int main() {
 long long calcCount(int lim, vector<pair<int, int>>& products) {
 	int count = 0;
 	int n = products.size();
-	int i = n - 1;
-	while (lim > products[i].first * products[i].second) {
-		count += products[i].first - lim / products[i].second;
+
+	for (int i = n - 1; i >= 0; i--) {
+		if (lim < products[i].first * products[i].second) {
+			count += lim / products[i].second;
+		}
+		else {
+			count += products[i].first;
+		}
 	}
 
 	return count;
