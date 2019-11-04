@@ -2,6 +2,7 @@
 #include <vector>
 #include <utility>
 #include <algorithm>
+#include <map>
 using namespace std;
 
 long long calcCount(int, vector<pair<int, int>>&);
@@ -57,10 +58,10 @@ int main() {
 		}
 
 		if (d > k) {
-			end = lim;
+			start = lim;
 		}
 		else {
-			start = lim;
+			end = lim;
 		}
 	}
 
@@ -73,9 +74,17 @@ long long calcCount(int lim, vector<pair<int, int>>& products) {
 	int count = 0;
 	int n = products.size();
 
+	bool d = false;
 	for (int i = n - 1; i >= 0; i--) {
 		if (lim < products[i].first * products[i].second) {
-			count += lim / products[i].second;
+			int a = lim / products[i].second;
+			count += a;
+			if (d && a > 0) {
+				--count;
+			}
+			else {
+				d = true;
+			}
 		}
 		else {
 			count += products[i].first;
