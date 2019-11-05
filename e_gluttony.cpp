@@ -2,10 +2,9 @@
 #include <vector>
 #include <utility>
 #include <algorithm>
-#include <map>
 using namespace std;
 
-long long calcCount(int, vector<pair<int, int>>&);
+long long calcCount(int, vector<int>&, vector<int>&);
 
 int main() {
 	int n;
@@ -31,64 +30,44 @@ int main() {
 	sort(a.begin(), a.end());
 	sort(f.begin(), f.end());
 
-	vector<pair<int, int>> products(n);
 	long long maxProduct = 0;
 	for (int i = 0; i < n; i++) {
-		products[i] = pair<int, int>(a[i], f[n - i - 1]);
-
 		int p = a[i] * f[n - i - 1];
 		if (p > maxProduct) {
 			maxProduct = p;
 		}
 	}
 
-	sort(begin(products), end(products), [](pair<int, int> const& lhs, pair<int, int> const& rhs) {
-		return lhs.first * lhs.second < rhs.first * rhs.second;
-	});
-
 	int start = 0;
 	int end = maxProduct;
-	int lim = 0;
+	int lim;
+	int prevLim = -1;
 	while (start < end) {
 		lim = (start + end) / 2;
-		long long count = calcCount(lim, products);
-		long long d = s - count;
-		if (d == k) {
+		long long count = calcCount(lim, a, f);
+		if (count <= k) {
+			prevLim = lim;
+			end = lim;
+		}
+		else if (prevLim != -1) {
 			break;
 		}
-
-		if (d > k) {
-			start = lim;
-		}
 		else {
-			end = lim;
+			start = lim;
 		}
 	}
 
-	cout << (start >= end ? maxProduct : lim);
+	cout << (prevLim == -1 ? maxProduct : prevLim);
 
 	return 0;
 }
 
-long long calcCount(int lim, vector<pair<int, int>>& products) {
+long long calcCount(int lim, vector<int>& a, vector<int>& f) {
 	int count = 0;
-	int n = products.size();
+	int n = a.size();
 
-	bool d = false;
-	for (int i = n - 1; i >= 0; i--) {
-		if (lim < products[i].first * products[i].second) {
-			int a = lim / products[i].second;
-			count += a;
-			if (d && a > 0) {
-				--count;
-			}
-			else {
-				d = true;
-			}
-		}
-		else {
-			count += products[i].first;
-		}
+	for (int i = 0; i < n; ++i) {
+		count += max(0, a[i] - lim / f[n - i - 1]);
 	}
 
 	return count;
