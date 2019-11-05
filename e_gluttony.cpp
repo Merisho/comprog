@@ -10,19 +10,13 @@ int main() {
 	cin >> n >> k;
 
 	vector<long long> a(n);
-	long long s = 0;
 	for (int i = 0; i < n; ++i) {
 		cin >> a[i];
-		s += a[i];
 	}
 
 	vector<long long> f(n);
-	int fmin = 1e6 + 1;
 	for (int i = 0; i < n; ++i) {
 		cin >> f[i];
-		if (f[i] < fmin) {
-			fmin = f[i];
-		}
 	}
 
 	sort(a.begin(), a.end());
