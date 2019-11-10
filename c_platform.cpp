@@ -63,7 +63,7 @@ vector<int> platforms(int n, int m, int d, vector<int> c) {
 			x = b[p] + c[p] - 1;
 		}
 		else if (next <= b[p] + c[p]) {
-			x = b[p] + c[p];
+			x = b[p] + c[p] - 1;
 		}
 
 		p++;
