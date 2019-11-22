@@ -1,5 +1,3 @@
-*
-!.gitignore
-!*.cpp
-!*.go
-!*.log
+*.log
+*.test
+*.exe

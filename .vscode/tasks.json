@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "compile current file",
+        "type": "shell",
+        "command": "g++",
+        "args": ["-g", "-o", "${fileBasenameNoExtension}.exe", "${fileBasename}", "-static-libgcc", "-static-libstdc++"],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        }
+      }
+    ]
+  }
