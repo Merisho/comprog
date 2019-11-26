@@ -4,8 +4,6 @@ using namespace std;
 vector<int> g[100000];
 int c[100000] = { 0 };
 
-int k = 0;
-
 void paint(int v, int prevColor) {
 	int curr = 1;
 
@@ -15,7 +13,6 @@ void paint(int v, int prevColor) {
 		}
 
 		c[g[v][i]] = curr;
-		++k;
 		++curr;
 
 		paint(g[v][i], curr - 1);
