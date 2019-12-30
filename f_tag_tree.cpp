@@ -34,9 +34,11 @@ int main() {
 	}
 
 	int ud[100000];
+	ud[u] = 0;
 	dfs(ud, u, u);
 
 	int vd[100000];
+	vd[v] = 0;
 	dfs(vd, v, v);
 
 	int ans = 0;
