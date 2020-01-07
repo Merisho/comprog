@@ -6,28 +6,43 @@ int main() {
 	cin >> n;
 
 	int a[n];
+	int k = 0;
+	pair<int, int> b[n];
+	int start = 0;
+	int prev = 0;
+	int len = 0;
+
 	for (int i = 0; i < n; ++i) {
 		cin >> a[i];
-	}
 
-	int m = 0;
-	int l = 0;
-	int k = 1;
-	for (int i = 1; i < n; ++i) {
-		if (a[i] > a[i - 1]) {
+		if (a[i] <= prev) {
+			b[k] = { start, i - 1 };
+			len = max(len, i - start);
+
 			++k;
-		} else {
-			++l;
+			start = i;
 		}
 
-		if (l > 1) {
-			m = max(m, k);
-			l = 0;
-			k = 1;
+		prev = a[i];
+	}
+
+	b[k] = { start, n - 1 };
+	len = max(len, n - start);
+
+	if (k == 0) {
+		cout << n;
+		return 0;
+	}
+
+	for (int i = 0; i < k; ++i) {
+		int penult = max(b[i].second - 1, b[i].first);
+		int second = min(b[i + 1].first + 1, b[i + 1].second);
+		if (a[penult] < a[b[i + 1].first] || a[b[i].second] < a[second]) {
+			len = max(len, b[i + 1].second - b[i].first);
 		}
 	}
 
-	cout << max(m, k);
+	cout << len;
 	
 	return 0;
 }
