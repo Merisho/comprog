@@ -7,7 +7,7 @@ int main() {
 	int h, w;
 	cin >> h >> w;
 
-	cout << 0;
+	
 	
 	return 0;
 }
