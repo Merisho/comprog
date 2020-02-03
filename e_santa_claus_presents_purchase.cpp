@@ -9,23 +9,14 @@ int main() {
 		long long n, a, b;
 		cin >> n >> a >> b;
 
-		if (n < a) {
-			cout << "NO" << endl;
-			continue;
-		}
-
-		if (n <= b) {
-			cout << "YES" << endl;
-			continue;
-		}
-
-		long long l = n % a;
-		long long k = n / a;
-
-		if (l == 0 || k > 1) {
-			cout << "YES";
-		} else {
+		long long x = n / a;
+		long long y = n / b;
+		long long ra = n % a;
+		long long rb = n % b;
+		if ((a == b && n % a != 0) || (a != b && x == y && ra != rb)) {
 			cout << "NO";
+		} else {
+			cout << "YES";
 		}
 
 		cout << endl;
