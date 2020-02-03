@@ -9,15 +9,30 @@ int main() {
 		int n;
 		cin >> n;
 
-		bool ans = true;
-		for (int i = 0; i < n; ++i) {
-			int a;
-			cin >> a;
-			
-			
+		vector<int> a(n);
+		for (int& ai : a) {
+			cin >> ai;
 		}
 
-		if (ans) {
+		int p = -1;
+		for (int i = 0; i < n; ++i) {
+			if (a[i] < i) {
+				break;
+			}
+
+			p = i;
+		}
+
+		int s = n;
+		for (int i = n - 1; i >= 0; --i) {
+			if (a[i] < (n - i - 1)) {
+				break;
+			}
+
+			s = i;
+		}
+
+		if (s <= p) {
 			cout << "Yes";
 		} else {
 			cout << "No";
