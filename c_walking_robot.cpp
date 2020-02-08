@@ -30,15 +30,15 @@ int main() {
 			x += c[m].first;
 			y += c[m].second;
 
-			if (v.find({x, y}) == v.end()) {
-				v[{x, y}] = i;
-			} else {
+			if (v.find({x, y}) != v.end()) {
 				int d = i - v[{x, y}];
 				if (md > d) {
 					md = d;
 					s = v[{x, y}] + 1;
 				}
 			}
+
+			v[{x, y}] = i;
 		}
 
 		if (s == -1) {
