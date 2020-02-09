@@ -25,12 +25,11 @@ int main() {
 	int r1, c1, r2, c2;
 	cin >> r1 >> c1 >> r2 >> c2;
 
-	long long s = 0;
-	for (int i = r1; i <= r2; ++i) {
-		for (int j = c1; j <= c2; ++j) {
-			s = (s + f(i + j + 1)) % MOD;
-		}
+	long long s = f(r1 + c1 + 1);
+	for (int i = r1 + c1 + 1; i < r2 + c2; ++i) {
+		s = (s + f(i + 1) * 2) % MOD;
 	}
+	s = (s + f(r2 + c2 + 1)) % MOD;
 
 	cout << s;
 	
