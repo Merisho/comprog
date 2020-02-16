@@ -1,19 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+constexpr int EQUAL = 0;
+constexpr int LESS_THAN = 1;
+constexpr int GREATER_THAN = 2;
+
 int l;
 vector<int> n;
 vector<int> a;
 
-int f(int pos, int count, char cmp = '=') {
+int f(int pos, int count, char cmp = EQUAL) {
 	int res = 0;
 
-	if (count < 0 || cmp == '>') {
-		return 0;
+	if (count == 0 && cmp != GREATER_THAN) {
+		return 1;
 	}
 
-	if (pos == l) {
-		return (count == 0 && cmp != '>') ? 1 : 0;
+	if (pos == l || cmp == GREATER_THAN) {
+		return 0;
 	}
 	
 	for (int d = 0; d < 10; ++d) {
@@ -22,20 +26,25 @@ int f(int pos, int count, char cmp = '=') {
 			--count;
 		}
 
-		if (cmp == '=') {
+		char cmp2 = cmp;
+		if (cmp2 == EQUAL) {
 			if (a[pos] < n[pos]) {
-				cmp = '<';
+				cmp2 = LESS_THAN;
 			} else if (a[pos] > n[pos]) {
-				cmp = '>';
+				cmp2 = GREATER_THAN;
 			}
 		}
 
-		res += f(pos + 1, count, cmp);
+		res += f(pos + 1, count, cmp2);
 
 		if (d != 0) {
 			++count;
 		}
 		a[pos] = 0;
+
+		if (cmp2 == GREATER_THAN) {
+			break;
+		}
 	}
 
 	return res;
