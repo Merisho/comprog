@@ -11,33 +11,28 @@ int main() {
 		int n;
 		cin >> n;
 
-		vector<long long> p(n + 1);
-		p[0] = 0;
+		long long y = 0;
+		vector<int> a(n);
 		for (int i = 0; i < n; ++i) {
-			int a;
-			cin >> a;
-			p[i + 1] = p[i] + a;
+			cin >> a[i];
+			y += a[i];
 		}
 
-		bool happy = true;
-		for (int i = 0; i <= n; ++i) {
-			for (int j = i + 1; j <= n; ++j) {
-				if (i == 0 && j == n) {
-					continue;
-				}
-				
-				if (p[j] - p[i] >= p[n]) {
-					happy = false;
-					break;
-				}
+		long long m = 0;
+		for (int k = 1; k < n; ++k) {
+			long long s = 0;
+			for (int j = 0; j < k; ++j) {
+				s += a[j];
 			}
 
-			if (!happy) {
-				break;
+			m = max(m, s);
+			for (int j = k; j < n; ++j) {
+				s = s - a[j - k] + a[j];
+				m = max(m, s);
 			}
 		}
 
-		if (happy) {
+		if (m < y) {
 			cout << "YES";
 		} else {
 			cout << "NO";
