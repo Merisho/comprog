@@ -5,97 +5,43 @@ int main() {
 	int X, Y, A, B, C;
 	cin >> X >> Y >> A >> B >> C;
 
-	vector<int> p(A);
-	for (int& pi : p) {
+	priority_queue<int> p, q, t;
+	for (int i = 0; i < A; ++i) {
+		int pi;
 		cin >> pi;
+		p.push(pi);
 	}
 
-	vector<int> q(B);
-	for (int& qi : q) {
+	for (int i = 0; i < B; ++i) {
+		int qi;
 		cin >> qi;
+		q.push(qi);
 	}
 
-	vector<int> r(C);
-	for (int& ri : r) {
-		cin >> ri;
+	for (int i = 0; i < C; ++i) {
+		int r;
+		cin >> r;
+		t.push(r);
 	}
 
-	sort(p.begin(), p.end());
-	sort(q.begin(), q.end());
-	sort(r.begin(), r.end());
+	for (int i = 0; i < X; ++i) {
+		t.push(p.top());
+		p.pop();
+	}
 
-	int rd = A - 1;
-	int gr = B - 1;
-	int cl = C - 1;
-	int x = 0;
-	int y = 0;
+	for (int i = 0; i < Y; ++i) {
+		t.push(q.top());
+		q.pop();
+	}
+
 	long long s = 0;
-	while (x < X && y < Y) {
-		int pi = p[rd];
-		int qi = q[gr];
-		int ri = cl >= 0 ? r[cl] : 0;
-
-		int a, b;
-		if (pi >= qi) {
-			a = pi;
-			--rd;
-			if (qi >= ri) {
-				b = qi;
-				--gr;
-			} else {
-				b = ri;
-				--cl;
-			}
-		} else {
-			a = qi;
-			--gr;
-			if (pi >= ri) {
-				b = pi;
-				--rd;
-			} else {
-				b = ri;
-				--cl;
-			}
-		}
-
-		++x;
-		++y;
-
-		s += a + b;
-	}
-
-	while (x < X) {
-		int pi = p[rd];
-		int ri = cl >= 0 ? r[cl] : 0;
-
-		if (pi >= ri) {
-			s += pi;
-			--rd;
-		} else {
-			s += ri;
-			--cl;
-		}
-
-		++x;
-	}
-
-	while (y < Y) {
-		int qi = q[gr];
-		int ri = cl >= 0 ? r[cl] : 0;
-
-		if (qi >= ri) {
-			s += qi;
-			--rd;
-		} else {
-			s += ri;
-			--cl;
-		}
-
-		++y;
+	for (int i = 0; i < X + Y; ++i) {
+		s += t.top();
+		t.pop();
 	}
 
 	cout << s;
-	
+
 	return 0;
 }
 	
