@@ -12,27 +12,23 @@ int main() {
 		string x;
 		cin >> x;
 
-		
-		string a = "1";
-		string b = "1";
-		for (int i = 1; i < n; ++i) {
-			if (x[i] == '2') {
-				if (a[i - 1] == '0') {
-					a += '2';
-					b += '0';
-				} else if (b[i - 1] == '0') {
-					a += '0';
-					b += '2';
-				} else {
-					a += '1';
-					b += '1';
-				}
-			} else if (x[i] == '1') {
+		string a, b;
+		bool o = false;
+		for (int i = 0; i < n; ++i) {
+			if (o) {
+				a += '0';
+				b += x[i];
+				continue;
+			}
+			
+			if (x[i] == '1') {
+				o = true;
 				a += '1';
 				b += '0';
 			} else {
-				a += '0';
-				b += '0';
+				int d = (x[i] - '0') / 2;
+				a += (d + '0');
+				b += (d + '0');
 			}
 		}
 
