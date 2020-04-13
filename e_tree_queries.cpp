@@ -6,9 +6,6 @@ vector<bool> u;
 
 bool search(int v, set<int>& s) {
 	if (v == 0) {
-		for (int i = 0; i < g[0].size(); ++i) {
-			s.insert(g[0][i]);
-		}
 		return true;
 	}
 
@@ -38,7 +35,7 @@ int main() {
 	cin >> n >> m;
 
 	g = vector<vector<int>>(n);
-
+	vector<bool> rootNeighbors(n, false);
 	for (int i = 0; i < n - 1; ++i) {
 		int u, v;
 		cin >> u >> v;
@@ -47,13 +44,21 @@ int main() {
 
 		g[u].push_back(v);
 		g[v].push_back(u);
+
+		if (u == 0) {
+			rootNeighbors[v] = true;
+		}
+
+		if (v == 0) {
+			rootNeighbors[u] = true;
+		}
 	}
 
-	vector<set<int>> p(n);
+	vector<set<int>*> p(n);
 	for (int i = 1; i < n; ++i) {
 		u = vector<bool>(n, false);
-		set<int> s;
-		search(i, s);
+		set<int>* s = new set<int>();
+		search(i, *s);
 		p[i] = s;
 	}
 
@@ -71,7 +76,7 @@ int main() {
 		for (int j = 1; j < n; ++j) {
 			ans = true;
 			for (int vi : v) {
-				if (p[j].find(vi) == p[j].end()) {
+				if (p[j]->find(vi) == p[j]->end() && !rootNeighbors[vi]) {
 					ans = false;
 					break;
 				}
