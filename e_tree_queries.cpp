@@ -2,23 +2,20 @@
 using namespace std;
 
 vector<vector<int>> g;
-vector<bool> u;
 
-bool search(int v, set<int>& s) {
+bool search(int v, set<int>& s, int p = -1) {
 	if (v == 0) {
 		return true;
 	}
 
-	u[v] = true;
 	bool root = false;
 	for (int i = 0; i < g[v].size(); ++i) {
 		int to = g[v][i];
-		if (!u[to] && search(to, s)) {
+		if (to != p && search(to, s, v)) {
 			root = true;
 			break;
 		}
 	}
-	u[v] = false;
 
 	if (!root) {
 		return false;
@@ -36,6 +33,7 @@ int main() {
 
 	g = vector<vector<int>>(n);
 	vector<bool> rootNeighbors(n, false);
+	rootNeighbors[0] = true;
 	for (int i = 0; i < n - 1; ++i) {
 		int u, v;
 		cin >> u >> v;
@@ -54,29 +52,32 @@ int main() {
 		}
 	}
 
-	vector<set<int>*> p(n);
+	vector<set<int>*> p;
 	for (int i = 1; i < n; ++i) {
-		u = vector<bool>(n, false);
-		set<int>* s = new set<int>();
-		search(i, *s);
-		p[i] = s;
+		if (g[i].size() == 1) {
+			set<int>* s = new set<int>();
+			search(i, *s);
+			p.push_back(s);
+		}
 	}
 
+	vector<int> v(n);
 	for (int i = 0; i < m; ++i) {
 		int k;
 		cin >> k;
 
-		vector<int> v(k);
-		for (int& vi : v) {
+		for (int j = 0; j < k; ++j) {
+			int vi;
 			cin >> vi;
 			--vi;
+			v[j] = vi;
 		}
 
 		bool ans;
-		for (int j = 1; j < n; ++j) {
+		for (set<int>* s : p) {
 			ans = true;
-			for (int vi : v) {
-				if (p[j]->find(vi) == p[j]->end() && !rootNeighbors[vi]) {
+			for (int j = 0; j < k; ++j) {
+				if (s->find(v[j]) == s->end() && !rootNeighbors[v[j]]) {
 					ans = false;
 					break;
 				}
