@@ -7,8 +7,8 @@ int main() {
 	long long n, k;
 	cin >> n >> k;
 
-	long long s = 1;
-	while (k <= n) {
+	long long s = 0;
+	while (k <= n + 1) {
 		s = (s + k * (n + 1 - k) + 1) % MOD;
 		++k;
 	}
