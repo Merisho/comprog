@@ -3,45 +3,49 @@ using namespace std;
 
 constexpr long long MAX = 1e9;
 
+struct res {
+	long long dx;
+	long long dy;
+	int i;
+};
+
+map<char, int> diry = {
+	{'N', -1},
+	{'S', 1},
+	{'W', 0},
+	{'E', 0}
+};
+map<char, int> dirx = {
+	{'N', 0},
+	{'S', 0},
+	{'W', -1},
+	{'E', 1}
+};
 string s;
 int n;
 
-int subpath(int m, int i, map<char, long long>& d) {
-	map<char, long long> ld = {
-		{ 'N', 0 },
-		{ 'S', 0 },
-		{ 'W', 0 },
-		{ 'E', 0 }
-	};
-
-	int k = i;
-	while (k < n && s[k] != ')') {
-		int c = s[k] - '0';
-		if (c >= 2 && c <= 9) {
-			map<char, long long> sd = {
-				{ 'N', 0 },
-				{ 'S', 0 },
-				{ 'W', 0 },
-				{ 'E', 0 }
-			};
-			k = subpath(c, k + 2, sd);
-			ld['N'] += sd['N'];
-			ld['S'] += sd['S'];
-			ld['W'] += sd['W'];
-			ld['E'] += sd['E'];
+res subpath(int l) {
+	long long x = 0;
+	long long y = 0;
+	int i;
+	for (i = l; i < n && s[i] != ')'; ++i) {
+		int si = s[i] - '0';
+		if (si >= 2 && si <= 9) {
+			res r = subpath(i + 2);
+			x = (x + r.dx * si) % MAX;
+			y = (y + r.dy * si) % MAX;
+			i = r.i;
 		} else {
-			++ld[s[k]];
+			x = (x + dirx[s[i]]) % MAX;
+			y = (y + diry[s[i]]) % MAX;
 		}
-
-		++k;
 	}
 
-	d['N'] += ld['N'] * m;
-	d['E'] += ld['E'] * m;
-	d['S'] += ld['S'] * m;
-	d['W'] += ld['W'] * m;
-
-	return k;
+	return res{
+		dx: x,
+		dy: y,
+		i: i,
+	};
 }
 
 int main() {
@@ -53,28 +57,16 @@ int main() {
 
 		n = s.length();
 
-		map<char, long long> dirs = {
-			{ 'N', 0 },
-			{ 'S', 0 },
-			{ 'W', 0 },
-			{ 'E', 0 }
-		};
-		subpath(1, 0, dirs);
-
-		int dw = (dirs['E'] - dirs['W']) % MAX;
-		int dh = (dirs['S'] - dirs['N']) % MAX;
-		int w;
-		if (dw < 0) {
-			w = MAX + 1 + dw;
-		} else {
-			w = 1 + dw;
+		res r = subpath(0);
+		long long w = 1 + r.dx;
+		long long h = 1 + r.dy;
+		
+		if (w <= 0) {
+			w = MAX + w;
 		}
 
-		int h;
-		if (dh < 0) {
-			h = MAX + 1 + dh;
-		} else {
-			h = 1 + dh;
+		if (h <= 0) {
+			h = MAX + h;
 		}
 
 		cout << "Case #" << t << ": " << w << " " << h << endl;
