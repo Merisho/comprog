@@ -2,36 +2,17 @@
 using namespace std;
 
 vector<vector<int>> g;
-vector<pair<int, int>> children;
-map<int, bool> excluded_children;
+vector<int> scores;
 
-int count_children(int v, int p) {
+int count_scores(int v, int p, int l) {
 	int vc = 0;
 	for (int child : g[v]) {
 		if (child != p) {
-			vc += count_children(child, v) + 1;
+			vc += count_scores(child, v, l + 1) + 1;
 		}
 	}
 
-	children.push_back({vc, v});
-	return vc;
-}
-
-int count_ex_children(int v, int p, int l = 1) {
-	int vc = 0;
-
-	for (int child : g[v]) {
-		if (child == p) {
-			continue;
-		}
-
-		if (excluded_children[child]) {
-			vc += l;
-		} else {
-			vc += count_ex_children(child, v, l + 1);
-		}
-	}
-
+	scores.push_back(l - vc);
 	return vc;
 }
 
@@ -50,15 +31,14 @@ int main() {
 		g[v].push_back(u);
 	}
 
-	count_children(0, -1);
+	count_scores(0, -1, 0);
 
-	sort(children.begin(), children.end());
+	sort(scores.begin(), scores.end());
 
-	for (int i = 0; i < k; ++i) {
-		excluded_children[children[i].second] = true;
+	long long ans = 0;
+	for (int i = n - 1; i > n - 1 - k; --i) {
+		ans += scores[i];
 	}
-
-	int ans = count_ex_children(0, -1);
 
 	cout << ans;
 	
