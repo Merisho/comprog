@@ -1,6 +1,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+bool pred(long long A, long long s) {
+	if (s < 0) {
+		return A > s;
+	}
+
+	return A < s;
+}
+
 int main() {
 	int T;
 	cin >> T;
@@ -9,37 +17,51 @@ int main() {
 		int n, k;
 		cin >> n >> k;
 
-		int m = n / 2;
-
 		vector<int> a(n);
-		for (int i = 0; i < m; ++i) {
+		for (int i = 0; i < n; ++i) {
 			cin >> a[i];
 		}
 
+		vector<int> aa(n);
 		long long s = 0;
-		for (int i = 0; i < m; ++i) {
-			cin >> a[i + m];
-			s += a[i] + a[i + m];
-		}
-
-		int av = s * 2 / n;
-		int c = 0;
-		for (int i = 0; i < m; ++i) {
-			int mx = max(a[i], a[n - i - 1]);
-			int mn = min(a[i], a[n - i - 1]);
-			int aa = a[i] + a[n - i - 1];
-			if (aa == av) {
-				continue;
-			}
-
-			if (av - aa > 0 && av - mx <= k || av - aa < 0 && av - mn > 0) {
-				++c;
+		for (int i = 0; i < n / 2; ++i) {
+			if (i % 2 == 0) {
+				if (i > 0 && i < n / 2 - 1) {
+					s += 2 * (a[i] + a[n - i - 1]);
+				} else {
+					s += a[i] + a[n - i - 1];
+				}
 			} else {
-				c += 2;
+				if (i > 0 && i < n / 2 - 1) {
+					s -= 2 * (a[i] + a[n - i - 1]);
+				} else {
+					s -= a[i] + a[n - i - 1];
+				}
+			}
+
+			aa.push_back(a[i]);
+			aa.push_back(a[n - i - 1]);
+		}
+
+		long long A = 0;
+		int i;
+		for (i = 0; i < n && pred(A, s); ++i) {
+			if (i % 4 < 2) {
+				if (s < 0) {
+					A -= k - aa[i];
+				} else {
+					A += aa[i] - 1;
+				}
+			} else {
+				if (s < 0) {
+					A += -aa[i] + 1;
+				} else {
+					A += k - aa[i];
+				}
 			}
 		}
 
-		cout << c << endl;
+		cout << i << endl;
 	}
 	
 	return 0;
