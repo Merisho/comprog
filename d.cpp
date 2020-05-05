@@ -22,46 +22,30 @@ int main() {
 			cin >> a[i];
 		}
 
-		vector<int> aa(n);
-		long long s = 0;
+		vector<int> m(2 * k + 1, 0);
 		for (int i = 0; i < n / 2; ++i) {
-			if (i % 2 == 0) {
-				if (i > 0 && i < n / 2 - 1) {
-					s += 2 * (a[i] + a[n - i - 1]);
-				} else {
-					s += a[i] + a[n - i - 1];
-				}
-			} else {
-				if (i > 0 && i < n / 2 - 1) {
-					s -= 2 * (a[i] + a[n - i - 1]);
-				} else {
-					s -= a[i] + a[n - i - 1];
-				}
-			}
-
-			aa.push_back(a[i]);
-			aa.push_back(a[n - i - 1]);
+			++m[a[i] + a[n - i - 1]];
 		}
 
-		long long A = 0;
-		int i;
-		for (i = 0; i < n && pred(A, s); ++i) {
-			if (i % 4 < 2) {
-				if (s < 0) {
-					A -= k - aa[i];
-				} else {
-					A += aa[i] - 1;
-				}
-			} else {
-				if (s < 0) {
-					A += -aa[i] + 1;
-				} else {
-					A += k - aa[i];
-				}
-			}
+		vector<int> p(2 * k + 1, 0);
+		for (int i = 0; i < n / 2; ++i) {
+			int mn = min(a[i], a[n - i - 1]) + 1;
+			int mx = max(a[i], a[n - i - 1]) + k;
+
+			++p[mn];
+			--p[mx + 1];
 		}
 
-		cout << i << endl;
+		for (int i = 1; i <= 2 * k; ++i) {
+			p[i] += p[i - 1];
+		}
+
+		int ans = 1e9;
+		for (int x = 2; x <= 2 * k; ++x) {
+			ans = min(ans, p[x] - m[x] + (n / 2 - p[x]) * 2);
+		}
+
+		cout << ans << endl;
 	}
 	
 	return 0;
