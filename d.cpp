@@ -70,7 +70,7 @@ int main() {
 		return 0;
 	}
 
-	if (wr != wc) {
+	if (wr > 0 && wc == 0 || wc > 0 && wr == 0) {
 		cout << -1;
 		return 0;
 	}
