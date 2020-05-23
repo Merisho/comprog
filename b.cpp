@@ -1,64 +1,100 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+vector<set<int>> d;
+vector<bool> vis(26, false);
+vector<int> anc;
+
+void case_ans(int t) {
+	cout << "Case #" << t << ": ";
+}
+
+bool dfs(int p, int i) {
+	if (vis[p]) {
+		return false;
+	}
+
+	anc[p] += i;
+	vis[p] = true;
+
+	bool ok = true;
+	for (int c : d[p]) {
+		ok = dfs(c, i + 1);
+		if (!ok) {
+			break;
+		}
+	}
+
+	vis[p] = false;
+
+	return ok;
+}
+
 int main() {
 	int T;
 	cin >> T;
 
 	for (int t = 1; t <= T; ++t) {
-		int r, c;
-		cin >> r >> c;
+		d = vector<set<int>>(26);
+		anc = vector<int>(26, 0);
+		
+		int R, C;
+		cin >> R >> C;
 
-		char w[r][c];
-		for (int i = 0; i < r; ++i) {
-			for (int j = 0; j < c; ++j) {
-				cin >> w[i][j];
+		set<char> r;
+		int w[R][C];
+		for (int i = 0; i < R; ++i) {
+			for (int j = 0; j < C; ++j) {
+				char p;
+				cin >> p;
+				w[i][j] = p - 'A';
+				r.insert(w[i][j]);
 			}
 		}
 
-		vector<int> h(26, -1);
-		vector<int> b(26, -1);
-		for (int i = 0; i < c; ++i) {
-			for (int j = 0; j < r; ++j) {
-				int p = w[j][i] - 'A';
-				if (h[p] == -1) {
-					h[p] = 0;
-					b[p] = 0;
-				}
-
-				if (j < r - 1) {
-					++h[p];
-				}
-
-				if (j > 0) {
-					++b[p];
+		for (int i = 0; i < C; ++i) {
+			for (int j = 1; j < R; ++j) {
+				int c = w[j - 1][i];
+				int p = w[j][i];
+				if (c != p) {
+					r.erase(c);
+					d[p].insert(c);
 				}
 			}
 		}
 
-		int sb = 0;
-		int sh = 0;
-		vector<pair<int, int>> p;
-		for (int i = 0; i < 26; ++i) {
-			if (h[i] == -1) {
-				continue;
-			}
-
-			sb += b[i];
-			sh += h[i];
-
-			p.push_back({ b[i] - h[i], i });
-		}
-
-		if (sb != sh) {
-			cout << "Case #" << t << ": " << -1 << endl;
+		if (r.size() == 0) {
+			case_ans(t);
+			cout << -1 << endl;
 			continue;
 		}
 
-		sort(p.begin(), p.end(), greater<pair<int, int>>());
-		cout << "Case #" << t << ": ";
-		for (int i = 0; i < p.size(); ++i) {
-			cout << char(p[i].second + 'A');
+		bool ok = true;
+		for (int ri : r) {
+			ok = dfs(ri, 1);
+			if (!ok) {
+				break;
+			}
+		}
+
+		if (!ok) {
+			case_ans(t);
+			cout << -1 << endl;
+			continue;
+		}
+
+		vector<pair<int, char>> a;
+		for (int i = 0; i < 26; ++i) {
+			if (anc[i] != 0) {
+				a.push_back({ anc[i], i + 'A' });
+			}
+		}
+
+		sort(a.begin(), a.end());
+
+		case_ans(t);
+		for (pair<int, char> ai : a) {
+			cout << ai.second;
 		}
 
 		cout << endl;
@@ -66,4 +102,3 @@ int main() {
 	
 	return 0;
 }
-	
