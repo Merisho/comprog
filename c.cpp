@@ -1,15 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-bool sq(int a) {
-	if (a < 0) {
-		return false;
-	}
-
-	int s = sqrt(a);
-	return s * s == a;
-}
-
 int main() {
 	int T;
 	cin >> T;
@@ -18,24 +9,26 @@ int main() {
 		int n;
 		cin >> n;
 
-		vector<int> p(n + 1, 0);
-		for (int i = 1; i <= n; ++i) {
-			int a;
-			cin >> a;
-
-			p[i] = p[i - 1] + a;
+		vector<int> a(n);
+		int mx = 0;
+		for (int i = 0; i < n; ++i) {
+			cin >> a[i];
+			mx += abs(a[i]);
 		}
 
-		int k = 0;
-		for (int i = 0; i <= n; ++i) {
-			for (int j = i + 1; j <= n; ++j) {
-				if (sq(p[j] - p[i])) {
-					++k;
-				}
+		vector<int> cnt(2 * mx + 1, 0);
+		int ps = 0;
+		long long ans = 0;
+		++cnt[mx];
+		for (int i = 0; i < n; ++i) {
+			ps += a[i];
+			for (int j = 0; j * j <= mx + ps; ++j) {
+				ans += cnt[mx + ps - j * j];
 			}
+			++cnt[mx + ps];
 		}
 
-		cout << "Case #" << t << ": " << k << endl;
+		cout << "Case #" << t << ": " << ans << endl;
 	}
 	
 	return 0;
