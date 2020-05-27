@@ -11,9 +11,6 @@ bool prime(int n) {
 	return true;
 }
 
- // 213727131
- // 71242377
-
 int main() {
 	int T;
 	cin >> T;
@@ -27,16 +24,16 @@ int main() {
 			continue;
 		}
 
-		if (k == 1 || prime(n)) {
-			cout << n << endl;
-			continue;
-		}
+		int ans = n;
+		for (int i = 1; i <= sqrt(n); ++i) {
+			if (n % i == 0) {
+				if (i <= k) {
+					ans = min(ans, n / i);
+				}
 
-		int ans;
-		for (int i = 1; i <= n / 2; ++i) {
-			if (n % i == 0 && n / i <= k) {
-				ans = i;
-				break;
+				if (n / i <= k) {
+					ans = min(ans, i);
+				}
 			}
 		}
 
