@@ -1,36 +1,37 @@
 #include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
 
 int main() {
-	long long n;
+	ll n;
 	cin >> n;
 
-	vector<pair<long long, long long>> ab(n);
-	for (long long i = 0; i < n; ++i) {
-		cin >> ab[i].first;
-		cin >> ab[i].second;
+	vector<ll> a(n);
+	vector<ll> b(n);
+	for (ll i = 0; i < n; ++i) {
+		cin >> a[i];
+		cin >> b[i];
 	}
 
-	sort(ab.begin(), ab.end());
+	sort(a.begin(), a.end());
+	sort(b.begin(), b.end());
 
 	if (n % 2 == 1) {
-		long long a = ab[n / 2].first;
-		long long b = ab[n / 2].second;
-
-		long long s = b - a + 1;
+		ll l = a[n / 2];
+		ll r = b[n / 2];
+ 
+		ll s = r - l + 1;
 		cout << s;
-	} else {
-		long long a1 = ab[n / 2 - 1].first;
-		long long b1 = ab[n / 2 - 1].second;
-		long long a2 = ab[n / 2].first;
-		long long b2 = ab[n / 2].second;
-
-		long long s1 = a1 + a2;
-		long long s2 = b1 + b2;
-
-		long long s = s2 - s1 + 1;
-		cout << s;
+		return 0;
 	}
+
+	ll l1 = a[n / 2 - 1];
+	ll r1 = b[n / 2 - 1];
+	ll l2 = a[n / 2];
+	ll r2 = b[n / 2];
+
+	ll s = (r1 + r2) - (l1 + l2) + 1;
+	cout << s;
 	
 	return 0;
 }
