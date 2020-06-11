@@ -59,11 +59,6 @@ int main() {
 			}
 		}
 
-		if (g.empty() || b.empty()) {
-			cout << "Yes" << endl;
-			continue;
-		}
-
 		for (pair<int, int> bi : b) {
 			int r = bi.first;
 			int c = bi.second;
