@@ -4,36 +4,25 @@ using namespace std;
 int n, m;
 char mz[50][50];
 
-bool escape(int start_r, int start_c) {
-	vector<vector<bool>> v(n, vector<bool>(m, false));
-	bool e = false;
-
-	queue<pair<int, int>> q;
-	q.push({start_r, start_c});
-	while (!q.empty()) {
-		pair<int, int> u = q.front();
-		q.pop();
-
-		int r = u.first;
-		int c = u.second;
-		if (r < 0 || r >= n || c < 0 || c >= m || mz[r][c] == '#' || v[r][c]) {
-			continue;
-		}
-
-		v[r][c] = true;
-
-		if (r == n - 1 && c == m - 1) {
-			e = true;
-			break;
-		}
-
-		q.push({r - 1, c});
-		q.push({r + 1, c});
-		q.push({r, c - 1});
-		q.push({r, c + 1});
+bool v[50][50];
+void clearVisited() {
+	for (int i = 0; i < n; ++i) {
+		memset(v[i], 0, m);
 	}
+}
 
-	return e;
+bool escape(int r, int c) {
+	if (r < 0 || r >= n || c < 0 || c >= m || mz[r][c] == '#' || v[r][c]) {
+		return false;
+	}
+ 
+	if (r == n - 1 && c == m - 1) {
+		return true;
+	}
+ 
+	v[r][c] = true;
+ 
+	return escape(r - 1, c) || escape(r + 1, c) || escape(r, c - 1) || escape(r, c + 1);
 }
 
 int main() {
@@ -59,7 +48,7 @@ int main() {
 			}
 		}
 
-		for (pair<int, int> bi : b) {
+		for (const auto& bi : b) {
 			int r = bi.first;
 			int c = bi.second;
 
@@ -81,14 +70,16 @@ int main() {
 		}
 
 		bool ok = true;
-		for (pair<int, int> gi : g) {
+		for (const auto& gi : g) {
+			clearVisited();
 			if (!escape(gi.first, gi.second)) {
 				ok = false;
 				break;
 			}
 		}
 
-		for (pair<int, int> bi : b) {
+		for (const auto& bi : b) {
+			clearVisited();
 			if (escape(bi.first, bi.second)) {
 				ok = false;
 				break;
