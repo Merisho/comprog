@@ -4,25 +4,35 @@ using namespace std;
 int n, m;
 char mz[50][50];
 
-bool v[50][50];
-void clearVisited() {
-	for (int i = 0; i < n; ++i) {
-		memset(v[i], 0, m);
-	}
-}
-
-bool escape(int r, int c) {
-	if (r < 0 || r >= n || c < 0 || c >= m || mz[r][c] == '#' || v[r][c]) {
-		return false;
+int escape(char p) {
+	vector<vector<bool>> v(n, vector<bool>(m, false));
+	
+	queue<pair<int, int>> q;
+	q.push({n - 1, m - 1});
+	int k = 0;
+	while (!q.empty()) {
+		pair<int, int> u = q.front();
+		q.pop();
+ 
+		int r = u.first;
+		int c = u.second;
+		if (r < 0 || r >= n || c < 0 || c >= m || mz[r][c] == '#' || v[r][c]) {
+			continue;
+		}
+ 
+		v[r][c] = true;
+ 
+		if (mz[r][c] == p) {
+			++k;
+		}
+ 
+		q.push({r - 1, c});
+		q.push({r + 1, c});
+		q.push({r, c - 1});
+		q.push({r, c + 1});
 	}
  
-	if (r == n - 1 && c == m - 1) {
-		return true;
-	}
- 
-	v[r][c] = true;
- 
-	return escape(r - 1, c) || escape(r + 1, c) || escape(r, c - 1) || escape(r, c + 1);
+	return k;
 }
 
 int main() {
@@ -48,45 +58,26 @@ int main() {
 			}
 		}
 
+		pair<int, int> dirs[] = {
+			{-1, 0},
+			{1, 0},
+			{0, -1},
+			{0, 1}
+		};
 		for (const auto& bi : b) {
 			int r = bi.first;
 			int c = bi.second;
 
-			if (r - 1 >= 0 && mz[r - 1][c] == '.') {
-				mz[r - 1][c] = '#';
-			}
-
-			if (r + 1 < n && mz[r + 1][c] == '.') {
-				mz[r + 1][c] = '#';
-			}
-
-			if (c - 1 >= 0 && mz[r][c - 1] == '.') {
-				mz[r][c - 1] = '#';
-			}
-
-			if (c + 1 < m && mz[r][c + 1] == '.') {
-				mz[r][c + 1] = '#';
+			for (int i = 0; i < 4; ++i) {
+				int rr = r + dirs[i].first;
+				int cc = c + dirs[i].second;
+				if (rr >= 0 && cc >= 0 && rr < n && cc < m && mz[rr][cc] == '.') {
+					mz[rr][cc] = '#';
+				}
 			}
 		}
 
-		bool ok = true;
-		for (const auto& gi : g) {
-			clearVisited();
-			if (!escape(gi.first, gi.second)) {
-				ok = false;
-				break;
-			}
-		}
-
-		for (const auto& bi : b) {
-			clearVisited();
-			if (escape(bi.first, bi.second)) {
-				ok = false;
-				break;
-			}
-		}
-
-		if (ok) {
+		if (escape('G') == g.size() && escape('B') == 0) {
 			cout << "Yes";
 		} else {
 			cout << "No";
