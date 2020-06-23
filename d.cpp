@@ -5,7 +5,7 @@ vector<vector<int>> g;
 set<int> ind;
 vector<int> vis;
  
-void independent(int v, int k, bool pick) {
+void independent(int v, int k) {
 	if (ind.size() == k) {
 		return;
 	}
@@ -86,6 +86,8 @@ int main() {
 	g = vector<vector<int>>(n);
 	vis = vector<int>(n, 0);
  
+	int mn = 1e9;
+	int r;
 	for (int i = 0; i < m; ++i) {
 		int u, v;
 		cin >> u >> v;
@@ -95,11 +97,21 @@ int main() {
  
 		g[u].push_back(v);
 		g[v].push_back(u);
+
+		if (g[u].size() < mn) {
+			mn = g[u].size();
+			r = u;
+		}
+
+		if (g[v].size() < mn) {
+			mn = g[v].size();
+			r = v;
+		}
 	}
  
 	int indNum = (k + 1) / 2;
-	independent(0, indNum, true);
-	independent(1, indNum, true);
+	independent(r, indNum);
+	independent(g[r][0], indNum);
 	if (ind.size() == indNum) {
 		cout << 1 << endl;
 		for (int i : ind) {
