@@ -15,12 +15,12 @@ void independent(int v, int k) {
 	queue<pair<int, bool>> q;
 	q.push({v, true});
 
+	vis[v] = true;
+
 	while (!q.empty()) {
 		pair<int, bool> vv = q.front();
 		q.pop();
 		v = vv.first;
-
-		vis[v] = true;
 
 		bool pick = vv.second;
 		for (int u : g[v]) {
@@ -29,6 +29,7 @@ void independent(int v, int k) {
 			}
 
 			if (!vis[u]) {
+				vis[u] = true;
 				q.push({u, !vv.second});
 			}
 		}
