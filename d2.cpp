@@ -2,7 +2,6 @@
 using namespace std;
 using ll = long long;
 
-
 int main() {
 	int T;
 	cin >> T;
@@ -12,9 +11,6 @@ int main() {
 		cin >> n >> k;
 
 		vector<ll> rd;
-		ll md = 0;
-		ll mc = 0;
-		ll mx = 0;
 		map<ll, ll> count;
 		for (int i = 0; i < n; ++i) {
 			ll a;
@@ -24,18 +20,9 @@ int main() {
 				continue;
 			}
 
-			ll d = k - (a % k);
-			rd.push_back(d);
-
-			++count[d];
-			if (count[d] > mc) {
-				md = d;
-				mc = count[d];
-			} else if (count[d] == mc && d > md) {
-				md = d;
-			}
-
-			mx = max(mx, d);
+			ll r = k - (a % k);
+			rd.push_back(r);
+			++count[r];
 		}
 
 		if (rd.size() == 0) {
@@ -43,9 +30,19 @@ int main() {
 			continue;
 		}
 
-		ll ans = md + (k * (mc - 1));
-		ans = max(ans, mx) + 1;
+		ll m = 0;
+		for (int i = 0; i < rd.size(); ++i) {		
+			m = max(m, count[rd[i]]);
+		}
 
+		ll z = 0;
+		for (int i = 0; i < rd.size(); ++i) {
+			if (count[rd[i]] == m) {
+				z = max(z, rd[i]);
+			}
+		}
+
+		ll ans = z + k * (m - 1) + 1;
 		cout << ans << endl;
 	}
 	
