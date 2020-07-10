@@ -3,44 +3,34 @@ using namespace std;
 
 vector<int> a;
 
-int subsequence(int m, int p) {
-	int n = a.size();
-	int j = 0;
-	while (j < n && a[j] > m) ++j;
-
+int subsequence(int n, int m, int p) {
 	int c = 0;
-	if (j > 0) {
-		++c;
-	}
-
-	for (int i = j; i < n; ++i) {
-		if ((c + 1) % 2 == p && a[i] <= m) {
-			++c;
-		} else if ((c + 1) % 2 != p) {
+	for (int i = 0; i < n; ++i) {
+		int cnr = (c + 1) % 2;
+		if (cnr == p && a[i] <= m || cnr != p) {
 			++c;
 		}
 	}
 
 	return c;
 }
-
+ 
 int main() {
 	int n, k;
 	cin >> n >> k;
-
+ 
 	a = vector<int>(n);
-	for (int& ai : a) {
-		cin >> ai;
+	for (int i = 0; i < n; ++i) {
+		cin >> a[i];
 	}
 
 	int ans = 1e9;
 	int l = 1;
-	int r = 1e9 + 1;
+	int r = 1e9;
 	while (l <= r) {
 		int m = l + (r - l) / 2;
 
-		int c = subsequence(m, a[0] <= m ? 1 : 0);
-
+		int c = max(subsequence(n, m, 1), subsequence(n, m, 0));
 		if (c >= k) {
 			ans = m;
 			r = m - 1;
@@ -53,4 +43,3 @@ int main() {
 	
 	return 0;
 }
-	
