@@ -11,19 +11,27 @@ bool not_valid(vector<int>& a) {
 }
 
 int count(vector<int>& a) {
-	int k = 0;
-	int mx = 0;
-	for (int i = 0; i < a.size(); ++i) {
-		if (a[i] == 0) {
-			++k;
-		} else {
-			--k;
-		}
-
-		mx = max(mx, abs(k));
+	int t[2] = {0, 0};
+	for (int i = 0; i < a.size() / 2; ++i) {
+		++t[a[i]];
 	}
 
-	return mx;
+	int d = max(t[0], t[1]) - min(t[0], t[1]);
+
+	int k = 1;
+	int mx = 0;
+	for (int i = 0; i < a.size() - 1; ++i) {
+		if (a[i] == a[i + 1]) {
+			++k;
+		} else {
+			mx = max(mx, k);
+			k = 1;
+		}
+	}
+
+	mx = max(mx, k);
+
+	return max(mx, d);
 }
 
 int main() {
@@ -55,7 +63,7 @@ int main() {
 	while (a[m - 1] == a[j]) {
 		++j;
 	}
-
+ 
 	rotate(a.begin(), a.begin() + j, a.end());
 
 	int ans = count(a);
