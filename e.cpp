@@ -10,28 +10,31 @@ bool not_valid(vector<int>& a) {
 	return types[0] != types[1];
 }
 
-int count(vector<int>& a) {
-	int t[2] = {0, 0};
-	for (int i = 0; i < a.size() / 2; ++i) {
-		++t[a[i]];
-	}
-
-	int d = max(t[0], t[1]) - min(t[0], t[1]);
-
-	int k = 1;
-	int mx = 0;
-	for (int i = 0; i < a.size() - 1; ++i) {
-		if (a[i] == a[i + 1]) {
-			++k;
-		} else {
-			mx = max(mx, k);
-			k = 1;
+int compress(vector<int>& a) {
+	int k = 0;
+	map<int, bool> m;
+	vector<int> c;
+	while (a.size() > 0) {
+		m.clear();
+		c.clear();
+		for (int i = 0; i < a.size(); ++i) {
+			int ni = (i + 1) % a.size();
+			if (a[i] != a[ni]) {
+				m[i] = true;
+			}
 		}
+
+		for (int i = 0; i < a.size(); ++i) {
+			if (!m[i]) {
+				c.push_back(a[i]);
+			}
+		}
+
+		a = c;
+		++k;
 	}
 
-	mx = max(mx, k);
-
-	return max(mx, d);
+	return k;
 }
 
 int main() {
@@ -63,10 +66,10 @@ int main() {
 	while (a[m - 1] == a[j]) {
 		++j;
 	}
- 
+
 	rotate(a.begin(), a.begin() + j, a.end());
 
-	int ans = count(a);
+	int ans = compress(a);
 	cout << ans;
 	
 	return 0;
