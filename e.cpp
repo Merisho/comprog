@@ -1,40 +1,18 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-bool not_valid(vector<int>& a) {
-	int types[2] = {0, 0};
+int operations(vector<int>& a) {
+	int s = 0;
+	int mx = 0;
+	int mn = 1e9;
+
 	for (int i = 0; i < a.size(); ++i) {
-		++types[a[i]];
+		s += a[i];
+		mx = max(mx, s);
+		mn = min(mn, s);
 	}
 
-	return types[0] != types[1];
-}
-
-int compress(vector<int>& a) {
-	int k = 0;
-	map<int, bool> m;
-	vector<int> c;
-	while (a.size() > 0) {
-		m.clear();
-		c.clear();
-		for (int i = 0; i < a.size(); ++i) {
-			int ni = (i + 1) % a.size();
-			if (a[i] != a[ni]) {
-				m[i] = true;
-			}
-		}
-
-		for (int i = 0; i < a.size(); ++i) {
-			if (!m[i]) {
-				c.push_back(a[i]);
-			}
-		}
-
-		a = c;
-		++k;
-	}
-
-	return k;
+	return mx - mn;
 }
 
 int main() {
@@ -45,13 +23,21 @@ int main() {
 	cin >> s >> t;
 
 	vector<int> a;
+	int x = 0;
+	int y = 0;
 	for (int i = 0; i < n; ++i) {
 		if (s[i] != t[i]) {
-			a.push_back(s[i] - '0');
+			if (s[i] == '0') {
+				++x;
+				a.push_back(1);
+			} else {
+				++y;
+				a.push_back(-1);
+			}
 		}
 	}
 
-	if (not_valid(a)) {
+	if (x != y) {
 		cout << -1;
 		return 0;
 	}
@@ -62,14 +48,7 @@ int main() {
 		return 0;
 	}
 
-	int j = 0;
-	while (a[m - 1] == a[j]) {
-		++j;
-	}
-
-	rotate(a.begin(), a.begin() + j, a.end());
-
-	int ans = compress(a);
+	int ans = operations(a);
 	cout << ans;
 	
 	return 0;
