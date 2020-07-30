@@ -10,7 +10,7 @@ int main() {
 		cin >> n;
 
 		vector<int> a(n);
-		int l = 0;
+		int l = 1e9;
 		int r = 0;
 		for (int i = 0; i < n; ++i) {
 			cin >> a[i];
@@ -28,7 +28,7 @@ int main() {
 			}
 		}
 
-		if (l == 0 && r == 0) {
+		if (l == 1e9 && r == 0) {
 			cout << 0;
 		} else if (!b) {
 			cout << 1;
