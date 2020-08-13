@@ -16,30 +16,21 @@ int main() {
 			}
 		}
 
+		vector<vector<int>> count(n + m - 1, vector<int>(2, 0));
+		for (int i = 0; i < n; ++i) {
+			for (int j = 0; j < m; ++j) {
+				++count[i + j][mt[i][j]];
+			}
+		}
+
 		int s = 0;
-		for (int i = 0; i < (m + 1) / 2; ++i) {
-			int o = 0;
-			int z = 0;
-			int r = 0;
-			int c = i;
-			while (r < n && c >= 0) {
-				if (mt[r][c] == 1) {
-					++o;
-				} else {
-					++z;
-				}
-
-				if (mt[n - 1 - c][m - 1 - r] == 1) {
-					++o;
-				} else {
-					++z;
-				}
-
-				++r;
-				--c;
+		for (int i = 0; i <= (n + m - 2) / 2; ++i) {
+			int j = n + m - 2 - i;
+			if (i == j) {
+				break;
 			}
 
-			s += min(o, z);
+			s += min(count[i][0] + count[j][0], count[i][1] + count[j][1]);
 		}
 
 		cout << s << endl;
