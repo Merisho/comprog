@@ -19,15 +19,47 @@ int main() {
 
 		sort(c.begin(), c.end());
 
-		int ans = 0;
-		for (int i = 2; i <= k; ++i) {
-			if (k % i == 0) {
-				int l = min(i, 26);
-				ans = max(ans, c[26 - l] * l);
+		int ans = 1;
+		for (int m = 1; m <= n; ++m) {
+			vector<int> p(m);
+			for (int i = 0; i < m; ++i) {
+				p[i] = (i + k) % m;
 			}
 
-			while (k % i == 0) {
-				k /= i;
+			int ci = 25;
+			bool ok = true;
+			for (int i = 0; i < m; ++i) {
+				int l = 1;
+				int j = p[i];
+				set<int> s;
+				s.insert(i);
+				while (j != i) {
+					++l;
+					j = p[j];
+					if (s.find(j) != s.end()) {
+						l = 0;
+						break;
+					}
+				}
+
+				if (l == 0) {
+					continue;
+				}
+
+				while (ci >= 0 && c[ci] < l) {
+					--ci;
+				}
+
+				if (ci < 0) {
+					ok = false;
+					break;
+				}
+
+				c[ci] -= l;
+			}
+
+			if (ok) {
+				ans = m;
 			}
 		}
 
