@@ -26,27 +26,20 @@ int main() {
 				p[i] = (i + k) % m;
 			}
 
+			vector<int> cc = c;
+			vector<bool> v(m, false);
 			int ci = 25;
 			bool ok = true;
 			for (int i = 0; i < m; ++i) {
-				int l = 1;
-				int j = p[i];
-				set<int> s;
-				s.insert(i);
-				while (j != i) {
+				int l = 0;
+				int j = i;
+				while (!v[j]) {
+					v[j] = true;
 					++l;
 					j = p[j];
-					if (s.find(j) != s.end()) {
-						l = 0;
-						break;
-					}
 				}
 
-				if (l == 0) {
-					continue;
-				}
-
-				while (ci >= 0 && c[ci] < l) {
+				while (ci >= 0 && cc[ci] < l) {
 					--ci;
 				}
 
@@ -55,7 +48,7 @@ int main() {
 					break;
 				}
 
-				c[ci] -= l;
+				cc[ci] -= l;
 			}
 
 			if (ok) {
