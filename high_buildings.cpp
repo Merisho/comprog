@@ -21,7 +21,7 @@ int main() {
 		}
 
 		for (int i = 0; i < a - c; ++i) {
-			cout << 2 << " ";
+			cout << (n - 1) << " ";
 		}
 
 		int d = n - (a + b - c);
@@ -42,8 +42,8 @@ int main() {
 			}
 		}
 
-		for (int i = b - c; i > 0; --i) {
-			cout << 2 << " ";
+		for (int i = 0; i < b - c; ++i) {
+			cout << (n - 1) << " ";
 		}
 
 		cout << endl;
