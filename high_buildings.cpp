@@ -20,30 +20,25 @@ int main() {
 			continue;
 		}
 
+		vector<int> res;
 		for (int i = 0; i < a - c; ++i) {
-			cout << (n - 1) << " ";
+			res.push_back(n - 1);
 		}
 
-		int d = n - (a + b - c);
-		if (a - c > 0) {
-			for (int i = 0; i < d; ++i) {
-				cout << 1 << " ";
-			}
-			d = 0;
-		}
 
 		for (int i = 0; i < c; ++i) {
-			cout << n << " ";
-		}
-
-		if (b - c > 0) {
-			for (int i = 0; i < d; ++i) {
-				cout << 1 << " ";
-			}
+			res.push_back(n);
 		}
 
 		for (int i = 0; i < b - c; ++i) {
-			cout << (n - 1) << " ";
+			res.push_back(n - 1);
+		}
+
+		int d = n - (a + b - c);
+		res.insert(res.begin() + 1, d, 1);
+
+		for (int r : res) {
+			cout << r << " ";
 		}
 
 		cout << endl;
