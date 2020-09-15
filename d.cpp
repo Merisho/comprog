@@ -6,23 +6,33 @@ int main() {
 	int n;
 	cin >> n;
 
-	vector<ll> a(n);
-	for (ll& ai : a) {
+	vector<int> a(n);
+	vector<int> c(20, 0);
+	for (int& ai : a) {
 		cin >> ai;
+
+		int t = ai;
+		int k = 0;
+		while (t > 0) {
+			c[k] += t % 2;
+			t >>= 1;
+			++k;
+		}
 	}
 
-	sort(a.begin(), a.end());
-
-	ll mx = a[n - 1];
 	ll s = 0;
-	for (int i = 0; i < n - 1; ++i) {
-		ll t = mx;
-		mx |= a[i];
-		a[i] &= t;
-		s += (a[i] * a[i]);
-	}
+	ll t = 1e9;
+	while (t > 0) {
+		t = 0;
+		for (int i = 19; i >= 0; --i) {
+			if (c[i] > 0) {
+				t += 1LL<<i;
+				--c[i];
+			}
+		}
 
-	s += (mx * mx);
+		s += (t * t);
+	}
 
 	cout << s;
 	
