@@ -18,18 +18,16 @@ int main() {
 		}
 
 		ll s = 0;
-		for (int i = 0; i < n / 2 + n % 2; ++i) {
-			for (int j = 0; j < m / 2 + m % 2; ++j) {
-				ll t = mx[i][j];
-
+		int mn = (n + 1) / 2;
+		int mm = (m + 1) / 2;
+		for (int i = 0; i < mn; ++i) {
+			for (int j = 0; j < mm; ++j) {
 				int x = m - j - 1;
 				int y = n - i - 1;
-				t += mx[y][j];
-				t += mx[i][x];
-				t += mx[y][x];
+				ll t[4] = { mx[i][j], mx[y][j], mx[i][x], mx[y][x] };
+				sort(t, t + 4);
 
-				ll md = t / 4LL;
-
+				ll md = t[1];
 				s += abs(md - mx[i][j]);
 
 				if (i != y) {
