@@ -13,49 +13,33 @@ int main() {
 		string s;
 		cin >> s;
 
-		vector<int> c;
-		int k = 1;
-		char p = s[0];
-		for (int i = 1; i < n; ++i) {
-			if (s[i] == p) {
-				++k;
-				continue;
+		queue<int> q;
+		int b = 0;
+		for (int i = 1; i < s.length(); ++i) {
+			if (s[i] == s[i - 1]) {
+				q.push(b);
+			} else {
+				++b;
 			}
-
-			c.push_back(k);
-			p = s[i];
-			k = 1;
 		}
 
-		c.push_back(k);
-
-		priority_queue<pair<int, int>> q;
-		for (int i = 0; i < c.size(); ++i) {
-			q.push({ c[i], i });
-		}
-
-		int ans = 0;
-		for (int i = 0; i < c.size(); ++i) {
-			if (c[i] == 0) {
-				continue;
+		int d = 0;
+		int o = 0;
+		for (int i = 0; i < s.length(); ++i) {
+			if (q.empty()) {
+				break;
 			}
-			
-			++ans;
-			if (c[i] == 1 && q.size() > 0) {
-				auto m = q.top();
+
+			q.pop();
+			d += 2;
+			++o;
+			while (!q.empty() && q.front() == i) {
+				++d;
 				q.pop();
-
-				if (c[m.second] > 0) {
-
-					--m.first;
-					--c[m.second];
-					q.push(m);
-				}
 			}
-
-			c[i] = 0;
 		}
 
+		int ans = o + (s.length() - d + 1) / 2;
 		cout << ans << endl;
 	}
 	
