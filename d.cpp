@@ -18,7 +18,6 @@ int main() {
 		if (m.count(p) != 0) {
 			++ans;
 			m.clear();
-			m[0] = 0;
 		}
 
 		m[p] = i;
