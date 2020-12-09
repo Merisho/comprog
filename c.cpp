@@ -9,32 +9,44 @@ int main() {
 
 	cin >> n >> x >> pos;
 
-	int gt = n - x;
-	int lt = x - 1;
-
 	int l = 0;
 	int r = n;
-	int gtc = 0;
-	int ltc = 0;
+	int lt = 0;
+	int gt = 0;
 	while (l < r) {
-		int m = (r + l) / 2;
-		if (m < pos) {
-			++ltc;
+		int m = (l + r) / 2;
+		if (m <= pos) {
+			lt += (m < pos);
 			l = m + 1;
 		} else if (m > pos) {
-			++gtc;
+			++gt;
 			r = m;
-		} else {
-			break;
 		}
 	}
 
-	if (gtc > gt || ltc > lt) {
-		cout << 0;
-		return 0;
+	int t = lt + gt;
+	ll ans = 1;
+	ll sm = x - 1;
+	while (lt > 0) {
+		ans = (ans * sm) % MOD;
+		--sm;
+		--lt;
 	}
 
-	
+	ll gr = n - x;
+	while (gt > 0) {
+		ans = (ans * gr) % MOD;
+		--gr;
+		--gt;
+	}
+
+	ll i = n - t - 1;
+	while (i > 0) {
+		ans = (ans * i) % MOD;
+		--i;
+	}
+
+	cout << ans;
 	
 	return 0;
 }
