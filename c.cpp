@@ -11,20 +11,28 @@ int main() {
 	int n;
 	cin >> n;
 
-	vector<int> b(n);
+	vector<int> b;
+	map<int, bool> u;
 	for (int i = 0; i < n; ++i) {
-		cin >> b[i];
+		int bi;
+		cin >> bi;
+
+		if (!u[bi]) {
+			b.push_back(bi);
+			u[bi] = true;
+		}
 	}
 
 	sort(a.begin(), a.end());
 	sort(b.begin(), b.end());
 
-	int m1 = b[b.size() - 1] - a[5];
-	
+	int mx = b[b.size() - 1] - a[5];
+
 	int ans = 1e9;
 	for (int i = 0; i < 6; ++i) {
-		for (int j = 0; j < b.size() - 1; ++j) {
-			ans = min(ans, abs(m1 - (b[j] - a[i])));
+		int d = b[0] - a[i];
+		if (d <= mx) {
+			ans = min(ans, mx - d);
 		}
 	}
 	
