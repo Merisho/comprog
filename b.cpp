@@ -13,25 +13,33 @@ int main() {
 		string s;
 		cin >> s;
 
-		int l = 0;
-		while (s[l] == '0') ++l;
-		int r = s.length() - 1;
-		while (s[r] == '0') --r;
-	
-		char p = s[l];
-		int o = 0;
-		int z = p == '0';
-		int ans = p == '1' ? a : 0;
-		for (int i = l + 1; i <= r; ++i) {
+		int ans = 0;
+		char p = '0';
+		for (int i = 0; i < s.length(); ++i) {
 			if (s[i] == '1' && p == '0') {
-				++o;
-			} else if (s[i] == '0') {
-				++z;
+				ans += a;
 			}
+
 			p = s[i];
 		}
 
-		ans += min(o * a, z * b);
+		int z = 0;
+		p = '2';
+		for (int i = 0; i < s.length(); ++i) {
+			if (p == '2' && s[i] == '0') {
+				continue;
+			}
+
+			if (p == '0' && s[i] == '1') {
+				ans = min(ans, ans - a + z * b);
+				z = 0;
+			} else if (s[i] == '0') {
+				++z;
+			}
+
+			p = s[i];
+		}
+
 		cout << ans << endl;
 	}
 	
