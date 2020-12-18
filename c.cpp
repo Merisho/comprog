@@ -11,28 +11,38 @@ int main() {
 	int n;
 	cin >> n;
 
-	vector<int> b;
-	map<int, bool> u;
+	vector<pair<int, int>> p;
 	for (int i = 0; i < n; ++i) {
 		int bi;
 		cin >> bi;
 
-		if (!u[bi]) {
-			b.push_back(bi);
-			u[bi] = true;
+		for (int j = 0; j < 6; ++j) {
+			p.push_back({ bi - a[j], i });
 		}
 	}
 
-	sort(a.begin(), a.end());
-	sort(b.begin(), b.end());
-
-	int mx = b[b.size() - 1] - a[5];
+	sort(p.begin(), p.end());
 
 	int ans = 1e9;
-	for (int i = 0; i < 6; ++i) {
-		int d = b[0] - a[i];
-		if (d <= mx) {
-			ans = min(ans, mx - d);
+	vector<int> ct(n, 0);
+	int u = 0;
+	for (int l = 0, r = 0; l < p.size(); ++l) {
+		while (r < p.size() && u < n) {
+			if (ct[p[r].second] == 0) {
+				++u;
+			}
+
+			++ct[p[r].second];
+			++r;
+		}
+
+		if (u == n) {
+			ans = min(ans, p[r - 1].first - p[l].first);
+		}
+
+		--ct[p[l].second];
+		if (ct[p[l].second] == 0) {
+			--u;
 		}
 	}
 	
