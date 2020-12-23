@@ -6,27 +6,18 @@ int main() {
 	int n;
 	cin >> n;
 
-	vector<ll> ps(n + 1, 0);
-	int mi = 0;
-	for (int i = 1; i <= n; ++i) {
+	ll ans = 0;
+	ll t = 0;
+	ll mx = 0;
+	ll ps = 0;
+	for (int i = 0; i < n; ++i) {
 		ll a;
 		cin >> a;
 
-		ps[i] = ps[i - 1] + a;
-		
-		if (ps[i] > ps[mi]) {
-			mi = i;
-		}
-	}
-
-	ll s = 0;
-	ll ans = 0;
-	for (int i = 1; i <= n; ++i) {
-		if (i >= mi) {
-			ans = max(ans, s + ps[mi]);
-		}
-
-		s += ps[i];
+		ps += a;
+		mx = max(mx, ps);
+		ans = max(ans, t + mx);
+		t += ps;
 	}
 
 	cout << ans;
