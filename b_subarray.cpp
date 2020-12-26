@@ -28,47 +28,25 @@ int main() {
 		int n;
 		cin >> n;
 
-		int k = sqrt(n);
-		vector<pair<int, int>> b(k + 1);
-		for (int i = 0; i < k + 1; ++i) {
-			b[i].first = 1e9 + 1;
-			b[i].second = -1;
-		}
-
-		vector<int> a(n);
-
-		int c = 0;
-		for (int i = 0; i < n; ++i) {
+		vector<int> a(n + 1);
+		for (int i = 1; i <= n; ++i) {
 			cin >> a[i];
-
-			if (i != 0 && i % k == 0) {
-				++c;
-			}
-
-			b[c].first = min(b[c].first, a[i]);
-			b[c].second = max(b[c].second, a[i]);
 		}
 
-		bool found = false;
-		for (int i = 0; i < n; ++i) {
-			for (int j = n - 1; j > i; --j) {
-				pair<int, int> mnmx = minmax(a, b, k, i, j);
-
-				if (mnmx.second - mnmx.first >= j - i + 1) {
-					found = true;
-					cout << "YES" << endl;
-					cout << i + 1 << " " << j + 1;
-					break;
-				}
-			}
-
-			if (found) {
+		int l = -1;
+		int r = -1;
+		for (int i = 1; i < n; ++i) {
+			if (abs(a[i + 1] - a[i]) >= 2) {
+				l = i;
+				r = i + 1;
 				break;
 			}
 		}
 
-		if (!found) {
+		if (l == -1 && r == -1) {
 			cout << "NO";
+		} else {
+			cout << "YES" << endl << l << " " << r;
 		}
 
 		cout << endl;
