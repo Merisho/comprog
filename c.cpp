@@ -2,55 +2,35 @@
 using namespace std;
 using ll = long long;
 
+ll f(vector<ll>& a, vector<ll>& b, vector<ll>& c) {
+	ll ans = accumulate(a.begin(), a.end(), 0LL);
+	ll sb = accumulate(b.begin(), b.end(), 0LL) - b[0];
+	ll sc = accumulate(c.begin(), c.end(), 0LL) - c[0];
+
+	ans += max({ sb + sc - b[0] - c[0], sb + b[0] - sc - c[0], sc + c[0] - sb - b[0] });
+	return ans;
+}
+
 int main() {
 	int n[3];
 	cin >> n[0] >> n[1] >> n[2];
 
-	vector<pair<ll, int>> a;
-	ll s = 0;
-	ll sn[3] = {0, 0, 0};
-	for (int i = 0; i < n[0]; ++i) {
-		ll ai;
-		cin >> ai;
+	vector<vector<ll>> a(3);
 
-		a.push_back({ai, 0});
-		s += ai;
-	}
-	sn[0] = s;
+	for (int i = 0; i < 3; ++i) {
+		a[i].resize(n[i]);
+		for (ll& ai : a[i]) {
+			cin >> ai;
+		}
 
-	for (int i = 0; i < n[1]; ++i) {
-		ll ai;
-		cin >> ai;
-
-		a.push_back({ai, 1});
-		s += ai;
-	}
-	sn[1] = s - sn[0];
-
-	for (int i = 0; i < n[2]; ++i) {
-		ll ai;
-		cin >> ai;
-
-		a.push_back({ai, 2});
-		s += ai;
-	}
-	sn[2] = s - sn[0] - sn[1];
-
-	sort(a.begin(), a.end());
-
-	if (n[a[0].second] == 1) {
-		s -= a[0].first * 2LL;
-	} else if (n[a[1].second] == 1) {
-		s -= a[1].first * 2LL;
-	} else if (a[0].second != a[1].second) {
-		s -= (a[0].first + a[1].first) * 2LL;
-	} else {
-		ll mn = min(sn[0], sn[1]);
-		mn = min(mn, sn[2]);
-		s -= mn * 2;
+		sort(a[i].begin(), a[i].end());
 	}
 
-	cout << s << endl;
+	ll ans = f(a[0], a[1], a[2]);
+	ans = max(ans, f(a[1], a[0], a[2]));
+	ans = max(ans, f(a[2], a[0], a[1]));
+
+	cout << ans << endl;
 	
 	return 0;
 }
