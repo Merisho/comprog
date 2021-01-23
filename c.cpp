@@ -10,21 +10,12 @@ int main() {
 		int n, k;
 		cin >> n >> k;
 
-		if (k == 1) {
-			cout << 1 << endl;
-			continue;
+		for (int i = 1; i <= 2 * k - n - 1; ++i) {
+			cout << i << " ";
 		}
 
-		if (n == k) {
-			for (int i = 1; i <= k; ++i) {
-				cout << i << " ";
-			}
-		} else {
-			for (int i = 1; i <= k - 2; ++i) {
-				cout << i << " ";
-			}
-
-			cout << k << " " << (k - 1);
+		for (int i = k; i >= 2 * k - n; --i) {
+			cout << i << " ";
 		}
 
 		cout << endl;
