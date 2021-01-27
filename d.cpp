@@ -10,13 +10,13 @@ int main() {
 		int n, m;
 		cin >> n >> m;
 
-		vector<int> a(n);
+		vector<ll> a(n);
 		for (int i = 0; i < n; ++i) {
 			cin >> a[i];
 		}
 
-		vector<int> b1;
-		vector<int> b2;
+		vector<ll> b1;
+		vector<ll> b2;
 		for (int i = 0; i < n; ++i) {
 			int b;
 			cin >> b;
@@ -28,39 +28,30 @@ int main() {
 			}
 		}
 
-		sort(b1.begin(), b1.end(), greater<int>());
-		sort(b2.begin(), b2.end(), greater<int>());
+		sort(b1.begin(), b1.end(), greater<ll>());
+		sort(b2.begin(), b2.end(), greater<ll>());
 
-		int s = 0;
-		int ans = 2 * b2.size();
-		for (int i = 0; i < b2.size(); ++i) {
-			s += b2[i];
-		}
-
-		int l = 0;
+		int ans = 1e9;
 		int r = b2.size() - 1;
+		ll sb1 = 0;
+		ll sb2 = accumulate(b2.begin(), b2.end(), 0LL);
+		int l;
+		for (l = 0; l <= b1.size(); ++l) {
+			while (r >= 0 && sb1 + sb2 - b2[r] >= m) {
+				sb2 -= b2[r];
+				--r;
+			}
 
-		while (l < b1.size() && r >= 0) {
-			if (s < m) {
-				s += b1[l];
-				++l;
-				++ans;
-			} else if (s - b2[r] >= m) {
-				s -= b2[r];
-				--r;
-				ans -= 2;
-			} else if (s - b2[r] + b1[l] >= m) {
-				s -= b2[r];
-				--r;
-				s += b1[l];
-				++l;
-				--ans;
-			} else {
-				break;
+			if (sb1 + sb2 >= m) {
+				ans = min(ans, 2 * (r + 1) + l);
+			}
+
+			if (l < b1.size()) {
+				sb1 += b1[l];
 			}
 		}
 
-		cout << (s < m ? -1 : ans) << endl;
+		cout << (ans == 1e9 ? -1 : ans) << endl;
 	}
 	
 	return 0;
