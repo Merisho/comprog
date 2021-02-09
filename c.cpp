@@ -15,37 +15,30 @@ int main() {
 			cin >> ci;
 		}
 
-		vector<ll> a(n);
-		for (int i = 0; i < n; ++i) {
+		vector<ll> a(n, 0);
+		cin >> a[0];
+		for (int i = 0; i < n - 1; ++i) {
 			cin >> a[i];
 		}
 
-		vector<ll> b(n);
-		for (int i = 0; i < n; ++i) {
+		vector<ll> b(n, 0);
+		cin >> b[0];
+		for (int i = 0; i < n - 1; ++i) {
 			cin >> b[i];
 		}
 
-		vector<vector<ll>> dp(n, vector<ll>(2, 0));
-		dp[0][0] = abs(b[1] - a[1]) + 2LL;
-		dp[0][1] = 0LL;
+		vector<ll> dp(n, 0);
+		dp[0] = abs(b[0] - a[0]);
 		ll ans = 0;
 		for (int i = 1; i < n; ++i) {
-			ll mx = max(dp[i - 1][0], dp[i - 1][1]);
-			ans = max(ans, mx + c[i] - 1LL);
+			ans = max(ans, dp[i - 1] + c[i] + 1LL);
 
-			if (i == n - 1) {
-				break;
-			}
-
-			if (a[i + 1] != b[i + 1]) {
-				ll top = abs(c[i] - max(a[i + 1], b[i + 1]));
-				ll bot = (min(a[i + 1], b[i + 1]) - 1LL);
-				dp[i][0] = dp[i - 1][0] + top + bot + 2LL;
+			if (a[i] != b[i]) {
+				dp[i] = dp[i - 1] + c[i] + 1LL - abs(a[i] - b[i]);
+				dp[i] = max(dp[i], abs(a[i] - b[i]));
 			} else {
-				dp[i][0] = 2LL;
+				dp[i] = 0LL;
 			}
-
-			dp[i][1] = abs(b[i + 1] - a[i + 1]) + 2LL;
 		}
 
 		cout << ans << endl;
