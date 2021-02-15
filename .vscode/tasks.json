@@ -5,11 +5,38 @@
         "label": "compile current file",
         "type": "shell",
         "command": "g++",
-        "args": ["-g", "-o", "${fileBasenameNoExtension}.exe", "${fileBasename}", "-static-libgcc", "-static-libstdc++"],
+        "args": [
+          "-g",
+          "-o",
+          "${fileBasenameNoExtension}.exe",
+          "${fileBasename}",
+          "-static-libgcc",
+          "-static-libstdc++"
+        ],
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "type": "cppbuild",
+        "label": "C/C++: g++.exe build active file",
+        "command": "D:/Programs/mingw/bin/g++.exe",
+        "args": [
+          "-g",
+          "${file}",
+          "-o",
+          "${fileDirname}\\${fileBasenameNoExtension}.exe"
+        ],
+        "options": {
+          "cwd": "D:/Programs/mingw/bin"
+        },
+        "problemMatcher": [
+          "$gcc"
+        ],
         "group": {
           "kind": "build",
           "isDefault": true
-        }
+        },
+        "detail": "compiler: D:/Programs/mingw/bin/g++.exe"
       }
     ]
   }
