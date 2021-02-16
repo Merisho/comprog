@@ -24,7 +24,9 @@
           "-g",
           "${file}",
           "-o",
-          "${fileDirname}\\${fileBasenameNoExtension}.exe"
+          "${fileDirname}\\${fileBasenameNoExtension}.exe",
+          "-static-libgcc",
+          "-static-libstdc++"
         ],
         "options": {
           "cwd": "D:/Programs/mingw/bin"
