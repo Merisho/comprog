@@ -11,35 +11,43 @@ int main() {
 		cin >> hi;
 	}
 
-	multiset<ll> s(h.begin() + X, h.end());
+	multiset<ll> s;
+	for (int i = X; i < n; ++i) {
+		s.insert(h[i]);
+	}
 
 	ll y = 0;
-	multiset<ll> ss;
-	for (ll si : s) {
+	multiset<int> sy;
+	for (auto si : s) {
 		if (y + si > Y) {
-			break;
+			continue;
 		}
 		
 		y += si;
-		ss.insert(si);
+		sy.insert(si);
 	}
 
-	ll z = ss.size();
-	for (ll i = X; i < n; ++i) {
-		if (ss.count(h[i]) > 0) {
-			y -= h[i];
-			ss.erase(h[i - X]);
+	for (ll si : sy) {
+		s.erase(si);
+	}
 
-			if (h[i - X] - h[i] <= 0) {
-				y += h[i - X];
-				ss.insert(h[i - X]);
-			}
-		} else if (y + h[i - X] <= Y) {
+	ll z = sy.size();
+	for (ll i = X; i < n; ++i) {
+		if (sy.count(h[i]) > 0) {
+			sy.erase(h[i]);
+			y -= h[i];
+		} else {
+			s.erase(h[i]);
+		}
+
+		if (y + h[i - X] <= Y) {
+			sy.insert(h[i - X]);
 			y += h[i - X];
+		} else {
 			s.insert(h[i - X]);
 		}
 
-		z = max(z, (ll)ss.size());
+		z = max(z, (ll)sy.size());
 	}
 
 	cout << (X + z);
