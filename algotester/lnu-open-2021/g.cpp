@@ -17,7 +17,7 @@ int main() {
 	}
 
 	ll y = 0;
-	multiset<int> sy;
+	multiset<ll> sy;
 	for (auto si : s) {
 		if (y + si > Y) {
 			continue;
