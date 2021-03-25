@@ -27,24 +27,16 @@ int main() {
 		sy.insert(si);
 	}
 
-	for (ll si : sy) {
-		s.erase(si);
-	}
-
 	ll z = sy.size();
 	for (ll i = X; i < n; ++i) {
 		if (sy.count(h[i]) > 0) {
 			sy.erase(h[i]);
 			y -= h[i];
-		} else {
-			s.erase(h[i]);
 		}
 
 		if (y + h[i - X] <= Y) {
 			sy.insert(h[i - X]);
 			y += h[i - X];
-		} else {
-			s.insert(h[i - X]);
 		}
 
 		z = max(z, (ll)sy.size());
