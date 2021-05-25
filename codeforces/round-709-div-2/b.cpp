@@ -31,44 +31,34 @@ int main() {
 			continue;
 		}
 
-		ll bc = a[1] - a[0];
-		ll ans_m = -1, ans_c = -1;
-		for (int i = 2; i < n; ++i) {
-			ll d = a[i] - a[i - 1];
-			if (d == bc) {
-				continue;
-			}
+		ll ans_m = -1;
+		ll ans_c = -1;
+		ll d = -1;
+		for (int i = 1; i < n; ++i) {
+			ll dd = a[i] - a[i - 1];
+			if (dd > 0) {
+				if (ans_c > -1 && dd != ans_c) {
+					ans_c = -1;
+					break;
+				}
 
-			if (d == 0) {
-				ans_m = -1;
-				break;
-			}
+				ans_c = dd;
+			} else if (dd < 0) {
+				if (d != -1 && -dd != d) {
+					ans_c = -1;
+					break;
+				}
 
-			ll c, m;
-
-			if (bc > 0) {
-				c = bc;
-				m = (a[i - 1] + c) - a[i];
+				d = -dd;
 			} else {
-				c = d;
-				m = c - bc;
-			}
-
-			if (c >= m) {
-				ans_m = -1;
-				break;
-			}
-
-			if (ans_m == -1) {
-				ans_m = m;
-				ans_c = c;
-			} else if (m != ans_m) {
-				ans_m = -1;
+				ans_c = -1;
 				break;
 			}
 		}
 
-		if (ans_m > -1) {
+		ans_m = ans_c + d;
+		sort(a.begin(), a.end());
+		if (ans_c != -1 && a[n - 1] < ans_m) {
 			cout << ans_m << " " << ans_c;
 		} else {
 			cout << -1;
