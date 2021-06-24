@@ -7,61 +7,53 @@ int main() {
 	cin >> n;
 
 	vector<pair<ll, ll>> c(n);
+	ll as = 0;
 	for (int i = 0; i < n; ++i) {
 		ll a, b;
 		cin >> a >> b;
 
 		c[i] = {b, a};
+		as += a;
 	}
 
 	sort(c.begin(), c.end());
 
+	if (as < c[0].first) {
+		cout << (2 * as);
+		return 0;
+	}
+
 	int l = 0;
 	int r = n - 1;
 	ll k = 0;
-	ll p = 0;
-	while (l < r) {
-		if (c[l].first <= c[r].second) {
-			p += 2 * c[l].first;
-			k += c[l].first;
-			k += c[l].second;
-			p += c[l].second;
-
-			c[r].second -= c[l].first;
-			c[l].first = 0;
-
-			++l;
-			if (l != r) {
-				c[l].first = max(0LL, c[l].first - k);
-			}
-		} else {
-			p += 2 * c[r].second;
-			k += c[r].second;
-			c[l].first -= c[r].second;
-			c[r].second = 0;
-
-			--r;
-			if (l != r) {
-				c[r].first = max(0LL, c[r].first - k);
-			}
-		}
-	}
-
-	if (l == r) {
-		ll b = c[l].first - k;
-		ll a = c[l].second;
-		if (b <= 0) {
-			p += a;
-		} else {
-			if (b >= a) {
-				p += 2 * a;
+	ll ans = 0;
+	while (l <= r) {
+		while (c[l].first - k > 0) {
+			if (c[r].second > c[l].first - k) {
+				ll d = c[l].first - k;
+				ans += 2 * d;
+				k += d;
+				c[r].second -= d;
 			} else {
-				p += 2 * b + (a - b);
+				ans += 2 * c[r].second;
+				k += c[r].second;
+				c[r].second = 0;
+				--r;
 			}
+
+			if (r < l) {
+				break;
+			}
+		}
+
+		if (c[l].first - k <= 0) {
+			ans += c[l].second;
+			k += c[l].second;
+			++l;
 		}
 	}
 
-	cout << p;
-	
+	cout << ans;
+
 	return 0;
 }
