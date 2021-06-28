@@ -22,17 +22,15 @@ void make_zero() {
 	}
 
 	tr = vector<int>(6);
-	if (o.size() == 3) {
-		int i = 0;
-		for (pair<int, int> p : o) {
-			tr[i] = p.first;
-			tr[i + 1] = p.second;
-			i += 2;
+	if (o.size() >= 3) {
+		for (int i = 0; i < 3; ++i) {
+			tr[i * 2] = o[o.size() - 1].first;
+			tr[i * 2 + 1] = o[o.size() - 1].second;
+			z.push_back(o[o.size() - 1]);
+			o.pop_back();
 		}
 
 		ans.push_back(tr);
-
-		o.clear();
 	} else if (o.size() == 2) {
 		tr[0] = o[1].first;
 		tr[1] = o[1].second;
@@ -46,8 +44,7 @@ void make_zero() {
 		auto z2 = z[1];
 
 		z.pop_back();
-		z.pop_back();
-		z.push_back(o[1]);
+		z[0] = o[1];
 
 		o.pop_back();
 		o.push_back(z1);
@@ -65,8 +62,7 @@ void make_zero() {
 		auto z2 = z[2];
 
 		z.pop_back();
-		z.pop_back();
-		z.push_back(o[0]);
+		z[1] = o[0];
 
 		o.pop_back();
 		o.push_back(z1);
@@ -95,8 +91,8 @@ int main() {
 		
 		for (int x = 0; x < n - 1; ++x) {
 			for (int y = 0; y < m - 1; ++y) {
-				o.clear();
-				z.clear();
+				o = vector<pair<int, int>>();
+				z = vector<pair<int, int>>();
 				for (int i = x; i <= x + 1; ++i) {
 					for (int j = y; j <= y + 1; ++j) {
 						if (a[i][j] == '1') {
