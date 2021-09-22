@@ -7,62 +7,39 @@ int main() {
 	cin >> T;
 
 	for (int test_case = 1; test_case <= T; ++test_case) {
-		int n;
+		ll n;
 		cin >> n;
 
 		vector<int> a(n);
-		int o = 0;
-		int e = 0;
-		priority_queue<int, vector<int>, std::greater<int>> oq;
-		priority_queue<int, vector<int>, std::greater<int>> eq;
+		vector<ll> o;
 		for (int i = 0; i < n; ++i) {
 			cin >> a[i];
-			if (a[i] % 2 == 0) {
-				++e;
-				eq.push(i);
-			} else {
-				++o;
-				oq.push(i);
+			a[i] %= 2;
+
+			if (a[i] == 1) {
+				o.push_back(i);
 			}
 		}
 
-		if (n == 1) {
-			cout << 0 << endl;
-			continue;
-		}
-
-		int h = (n + 1) / 2;
-		if (e > h || o > h) {
+		if (abs(int(2 * o.size() - a.size())) > 1) {
 			cout << -1 << endl;
 			continue;
 		}
 
-		int ans = 0;
-		int p = eq.top();
-		eq.pop();
-		while (!eq.empty() && !oq.empty()) {
-			int e = eq.top();
-			eq.pop();
-
-			if (e > oq.top()) {
-				oq.pop();
+		ll ans = 1e18;
+		for (int f = 0; f < 2; ++f) {
+			if (o.size() != (n + 1 - f) / 2) {
+				continue;
 			}
 
-			if (e - p == 1 || e - p > 2) {
-				int o = oq.top();
-
-				ans += abs(o - e);
-				eq.push(o);
-
-				oq.pop();
-
-				if (o > p) {
-					p = o;
-				}
-			} else if (e - p == 2) {
-				p = e;
+			ll cur = 0;
+			for (int i = 0; i < o.size(); ++i) {
+				cur += abs(f + i * 2 - o[i]);
 			}
+
+			ans = min(ans, cur);
 		}
+
 
 		cout << ans << endl;
 	}
