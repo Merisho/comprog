@@ -10,3 +10,8 @@
 *.test*
 *.exe
 .idea
+
+.DS_Store
+cmake-build-debug
+*.dSYM
+CMakeLists.txt
